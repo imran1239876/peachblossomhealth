@@ -1,11 +1,18 @@
 ---
+/**
+ * Closing banner: the Meet & Greet invitation, with Dr. Qureshi's cut-out
+ * portrait standing on the banner's bottom edge (the photo has a transparent
+ * background, so it sits directly on the rose fill).
+ */
+import { Image } from "astro:assets";
 import Icon from "@/components/Icon.astro";
 import { PRACTICE } from "@/lib/practice";
+import doctor from "@/assets/home/dr-qureshi-cutout.webp";
 ---
 
 <section class="cta2" aria-labelledby="cta-title">
   <div class="container">
-    <div class="cta2-box" data-reveal>
+    <div class="cta2-box cta2-box--doctor" data-reveal>
       <svg class="cta2-bloom" viewBox="0 0 100 100" aria-hidden="true"
         ><use href="#i-blossom"></use></svg
       >
@@ -29,22 +36,29 @@ import { PRACTICE } from "@/lib/practice";
             visit.
           </li>
         </ul>
+        <div class="cta2-actions">
+          <a
+            class="btn btn--white"
+            href={PRACTICE.bookingUrl}
+            target="_blank"
+            rel="noopener"
+            data-cta="book_meet_greet_footer_cta"
+            >Schedule Now <Icon name="arrow" /></a
+          >
+          <a class="cta2-phone" href={PRACTICE.phone.href}
+            ><Icon name="phone" size={18} />Call - Text {
+              PRACTICE.phone.display
+            }</a
+          >
+        </div>
       </div>
-      <div class="cta2-actions">
-        <a
-          class="btn btn--white"
-          href={PRACTICE.bookingUrl}
-          target="_blank"
-          rel="noopener"
-          data-cta="book_meet_greet_footer_cta"
-          >Schedule Now <Icon name="arrow" /></a
-        >
-        <a class="cta2-phone" href={PRACTICE.phone.href}
-          ><Icon name="phone" size={18} />Call - Text {
-            PRACTICE.phone.display
-          }</a
-        >
-      </div>
+      <Image
+        class="cta2-doctor"
+        src={doctor}
+        widths={[400, 800]}
+        sizes="(max-width: 1024px) 280px, 400px"
+        alt="Dr. Qureshi in her white coat"
+      />
     </div>
   </div>
 </section>
