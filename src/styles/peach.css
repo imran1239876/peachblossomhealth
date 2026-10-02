@@ -3296,3 +3296,86 @@ a:hover {
     transform: scaleX(1);
   }
 }
+
+/* ---------- Contact: form card ----------
+   The form is the starter's shadcn LeadForm island. Instead of restyling its
+   internals, re-point the shadcn design tokens inside this card so its inputs
+   and button pick up the brand. */
+.ct-form {
+  --primary: var(--rose-500);
+  --primary-foreground: #fff;
+  --ring: var(--rose-400);
+  --input: var(--line-strong);
+  --border: var(--line-strong);
+  --muted-foreground: var(--text-muted);
+  --radius: 12px;
+  display: grid;
+  gap: 6px;
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+.ct-form-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 2.4vw, 2.1rem);
+  line-height: 1.15;
+  -webkit-text-stroke: 0.022em currentColor;
+}
+.ct-form-note {
+  margin-bottom: 18px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.ct-form label {
+  color: var(--ink);
+}
+.ct-form button[type="submit"] {
+  min-height: 50px;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.ct-form button[type="submit"]:hover {
+  background: var(--rose-700);
+}
+
+/* ---------- Closing CTA with Dr. Qureshi's cut-out portrait ---------- */
+.cta2-box--doctor {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.55fr);
+  align-items: end;
+  padding-bottom: 0;
+}
+.cta2-box--doctor .cta2-copy {
+  align-self: center;
+  padding-bottom: clamp(40px, 5.5vw, 80px);
+}
+.cta2-box--doctor .cta2-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+  margin-top: 8px;
+}
+.cta2-doctor {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 400px;
+  margin-top: -24px;
+}
+@media (max-width: 1024px) {
+  .cta2-box--doctor {
+    grid-template-columns: 1fr;
+  }
+  .cta2-box--doctor .cta2-copy {
+    padding-bottom: 0;
+  }
+  .cta2-doctor {
+    justify-self: center;
+    max-width: 280px;
+    margin-top: 0;
+  }
+}

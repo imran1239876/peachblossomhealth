@@ -1,9 +1,13 @@
 ---
-import { Image } from "astro:assets";
+/**
+ * Contact details beside the contact form. The form is the starter's
+ * ContactForm island (LeadForm → Turnstile → portal), hydrated only when the
+ * section scrolls into view so the rest of the homepage stays JS-light.
+ */
+import ContactForm from "@/components/ContactForm.tsx";
 import Icon from "@/components/Icon.astro";
 import SplitHeading from "@/components/SplitHeading.astro";
 import { PRACTICE } from "@/lib/practice";
-import reception from "@/assets/home/office-reception.webp";
 ---
 
 <section class="ct section" id="visit" aria-labelledby="visit-title">
@@ -52,13 +56,13 @@ import reception from "@/assets/home/office-reception.webp";
           </li>
         </ul>
       </div>
-      <div class="ct-photo" data-reveal="img">
-        <Image
-          src={reception}
-          widths={[600, 1000]}
-          sizes="(max-width: 1024px) 90vw, 520px"
-          alt="Peach Blossom front desk with practice brochures"
-        />
+      <div class="ct-form" data-reveal>
+        <h3 class="ct-form-title">Send us a message</h3>
+        <p class="ct-form-note">
+          Questions about membership or scheduling? We&rsquo;ll get back to you.
+          For anything urgent, call or text {PRACTICE.phone.display}.
+        </p>
+        <ContactForm client:visible />
       </div>
     </div>
   </div>
