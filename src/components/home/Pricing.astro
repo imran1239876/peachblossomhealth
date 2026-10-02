@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+import family from "@/assets/home/family-membership.webp";
+
+const plans = [
+  {
+    name: "Child",
+    ages: "(0 to 18 years)",
+    price: "$60",
+    note: "with one parent/guardian membership",
+  },
+  { name: "Young Adult", ages: "(19 to 25 years)", price: "$100" },
+  { name: "Adult", ages: "(26+ years)", price: "$130", featured: true },
+];
+---
+
+<section class="pr section" id="pricing" aria-labelledby="pricing-title">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label" data-reveal>Pricing</span>
+      <SplitHeading id="pricing-title" text="DPC Membership" accent="Fees" />
+    </div>
+    <div class="pr-grid">
+      {
+        plans.map((p, i) => (
+          <article
+            class="pr-card"
+            data-reveal
+            style={`--d:${(i * 0.1).toFixed(1)}s`}
+          >
+            <h3>{p.name}</h3>
+            <p class="pr-age">{p.ages}</p>
+            <p class="pr-price">
+              <span>{p.price}</span>
+              <small>/Month</small>
+            </p>
+            <p class="pr-note">{p.note ?? " "}</p>
+            <a
+              class:list={["btn", p.featured ? "btn--primary" : "btn--outline"]}
+              href={PRACTICE.bookingUrl}
+              target="_blank"
+              rel="noopener"
+            >
+              Schedule Now
+            </a>
+          </article>
+        ))
+      }
+    </div>
+    <div class="pr-extra">
+      <div class="pr-box" data-reveal>
+        <h3>Registration Fee</h3>
+        <dl>
+          <div><dt>Individual Patient</dt><dd>$75</dd></div>
+          <div><dt>Two or More Patients</dt><dd>$125</dd></div>
+        </dl>
+        <p class="pr-small">Employer Rates Available Upon Request</p>
+      </div>
+      <div class="pr-box" data-reveal style="--d:.1s">
+        <h3>DPC Discounts</h3>
+        <dl>
+          <div><dt>Family of 2</dt><dd>5% Off</dd></div>
+          <div><dt>Family of 3&ndash;4</dt><dd>7% Off</dd></div>
+        </dl>
+      </div>
+      <div class="pr-box pr-box--family" data-reveal style="--d:.2s">
+        <Image
+          src={family}
+          widths={[700]}
+          sizes="(max-width: 1024px) 90vw, 360px"
+          alt="Family sitting together on a sofa"
+        />
+        <div>
+          <h3>Family Discount</h3>
+          <p class="pr-big">$390</p>
+          <p>
+            for two adults and their children (Must have same address and source
+            of payment)
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="sec-foot" data-reveal>
+      <a class="btn btn--primary" href="/pricing/"
+        >See full pricing <Icon name="arrow" /></a
+      >
+    </div>
+  </div>
+</section>

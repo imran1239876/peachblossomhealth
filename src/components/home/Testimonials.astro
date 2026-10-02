@@ -1,0 +1,49 @@
+---
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+
+const reviews = [
+  "Great! My husband started seeing her and she really took the time on all issues instead of rushing ya out like some docs so I then switched to her as well and am very happy. She is very compassionate, she even called my house a couple times to check up on me and see how things are going. Very happy patient here!",
+  "Dr. Qureshi is a great doctor. She listens and takes her time to understand your problems. Her bedside manner is awesome. I have been with her for 4 yrs and was devastated when she left her previous practice. I’m so glad my neighbor told me about Dr Qureshi opening her own practice. Certainly a step in the right direction! I plan to enroll and go wherever she goes. I currently live in Dover and will drive all the way up just to see her.",
+  "Hello, Dr. Qureshi is one of the best doctors I can recommend to everybody on my family member. She makes sure that everything goes well, asks me a lot of questions and makes sure she sees to my needs. She is very communicable, very nice, makes sure that everything is well planned for me. I can recommend her to everybody else, including my family member, Dr. Qureshi.",
+];
+---
+
+<section class="rv section" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="sec-head">
+      <Icon name="blossom-line" size={34} class="pc-bloom rv-bloom" />
+      <SplitHeading id="reviews-title" text="Patient" accent="Testimonials" />
+    </div>
+    <div class="rv-grid">
+      {
+        reviews.map((quote, i) => (
+          <figure
+            class="rv-card"
+            data-reveal
+            style={`--d:${(i * 0.1).toFixed(1)}s`}
+          >
+            <div class="rv-stars" role="img" aria-label="5 out of 5 stars">
+              {Array.from({ length: 5 }, () => (
+                <Icon name="star" />
+              ))}
+            </div>
+            <blockquote>
+              <p>{quote}</p>
+            </blockquote>
+            <figcaption>Patient</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+    <div class="sec-foot" data-reveal>
+      <a
+        class="btn btn--cream"
+        href={PRACTICE.bookingUrl}
+        target="_blank"
+        rel="noopener">Schedule Now <Icon name="arrow" /></a
+      >
+    </div>
+  </div>
+</section>

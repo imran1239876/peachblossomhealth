@@ -76,19 +76,25 @@ export interface SiteConfig {
 }
 
 export const SITE: SiteConfig = {
-  url: "https://example.com",
-  name: "Zikra Starter Site",
+  url: "https://peachblossomhealth.com",
+  name: "Peach Blossom Direct Primary Care",
   description:
-    "A fast, secure website built on the Zikra platform — Astro, Cloudflare, and a lead pipeline that never drops a submission.",
-  defaultTitle: "Zikra Starter Site — Fast, secure websites on Cloudflare",
-  defaultAuthor: "Zikra Team",
+    "Direct primary care and weight management in Bear, DE with Dr. Rabia Qureshi, MD. One flat monthly membership, same or next day visits, no copays.",
+  defaultTitle: "Direct Primary Care in Bear, DE | Peach Blossom Health",
+  defaultAuthor: "Dr. Rabia Qureshi, MD",
   defaultOgImage: "/og-default.png",
   gtmId: "",
   gaMeasurementId: "",
   z360Enabled: false,
   z360InquiriesUrl: "https://api.z360.example/v1/inquiries",
-  telephone: undefined,
-  address: undefined,
+  telephone: "+1-302-618-4075",
+  address: {
+    streetAddress: "121 Becks Woods Drive, Suite 203",
+    addressLocality: "Bear",
+    addressRegion: "DE",
+    postalCode: "19701",
+    addressCountry: "US",
+  },
 };
 
 /* -------------------------------------------------------------------------

@@ -1,19 +1,176 @@
 ---
+/**
+ * Site footer plus the phone-only bottom call/book bar.
+ *
+ * The prototype's newsletter sign-up was a mock form that thanked the visitor
+ * without sending anything. A form that drops what people type in breaks the
+ * starter's "never lose a lead" rule, so until a newsletter form exists in the
+ * portal (zikra-form skill → `<LeadForm formId="newsletter" />`) this column
+ * links to the newsletter archive instead.
+ */
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
 import { SITE } from "@/config";
+import { PRACTICE } from "@/lib/practice";
+import logo from "@/assets/home/logo.webp";
 
 const year = new Date().getFullYear();
+
+const columns = [
+  {
+    title: "Services",
+    links: [
+      { href: "/primary-care/", label: "Primary Care" },
+      { href: "/weight-management/", label: "Weight Management" },
+      { href: "/chemical-peel/", label: "Chemical Peel" },
+      {
+        href: "/medical-ear-nose-piercing/",
+        label: "Medical Ear & Nose Piercing",
+      },
+    ],
+  },
+  {
+    title: "Membership",
+    links: [
+      { href: "/pricing/", label: "Pricing" },
+      { href: "/employer-plans/", label: "Employer plans" },
+      { href: PRACTICE.enrollUrl, label: "Enroll online", external: true },
+      { href: "/current-patients/", label: "Current patients" },
+      { href: "/our-partners/", label: "Our partners" },
+    ],
+  },
+  {
+    title: "Practice",
+    links: [
+      { href: "/about-us/", label: "About Dr. Qureshi" },
+      { href: "/faq/", label: "FAQs" },
+      { href: "/blog", label: "Monthly newsletter" },
+      { href: "/contact-us/", label: "Contact" },
+    ],
+  },
+];
 ---
 
-<footer class="border-border/60 border-t">
-  <div
-    class="text-muted-foreground mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-8 text-sm sm:flex-row sm:px-6"
-  >
-    <p>&copy; {year} {SITE.name}. All rights reserved.</p>
-    <p>
-      Built with <a
-        href="https://astro.build"
-        class="hover:text-foreground underline underline-offset-4">Astro</a
-      > on the Zikra platform.
-    </p>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <Image
+          src={logo}
+          widths={[240, 480]}
+          sizes="168px"
+          alt={SITE.name}
+          loading="lazy"
+        />
+        <p>
+          Personalized direct primary care delivering compassionate, affordable
+          healthcare focused on your family's long term wellness.
+        </p>
+      </div>
+      {
+        columns.map((col) => (
+          <div>
+            <h3>{col.title}</h3>
+            <ul>
+              {col.links.map((l) => (
+                <li>
+                  {"external" in l ? (
+                    <a href={l.href} target="_blank" rel="noopener">
+                      {l.label}
+                    </a>
+                  ) : (
+                    <a href={l.href}>{l.label}</a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+      <div>
+        <h3>Monthly newsletter</h3>
+        <p style="margin-bottom:12px">
+          Health tips and practice news from Dr. Qureshi.
+        </p>
+        <a class="btn btn--primary btn--sm" href="/blog"
+          >Read the latest issue</a
+        >
+        <div class="social">
+          <a
+            href={PRACTICE.social.facebook}
+            target="_blank"
+            rel="noopener"
+            aria-label="Facebook"
+            ><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill="currentColor"
+                d="M14 8.5V6.8c0-.8.5-1.3 1.4-1.3H17V2.3c-.3 0-1.4-.1-2.6-.1C11.8 2.2 10.2 3.8 10.2 6.6v1.9H7.5V12h2.7v9.8H14V12h2.8l.4-3.5z"
+              ></path></svg
+            ></a
+          >
+          <a
+            href={PRACTICE.social.instagram}
+            target="_blank"
+            rel="noopener"
+            aria-label="Instagram"
+            ><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
+              ><rect
+                x="3.5"
+                y="3.5"
+                width="17"
+                height="17"
+                rx="5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"></rect><circle
+                cx="12"
+                cy="12"
+                r="4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"></circle><circle
+                cx="17.3"
+                cy="6.7"
+                r="1.1"
+                fill="currentColor"></circle></svg
+            ></a
+          >
+          <a
+            href={PRACTICE.social.tiktok}
+            target="_blank"
+            rel="noopener"
+            aria-label="TikTok"
+            ><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill="currentColor"
+                d="M16.6 3h-3.2v12.2a2.8 2.8 0 1 1-2-2.7V9.2a6 6 0 1 0 5.2 6V9.1a7.6 7.6 0 0 0 4.4 1.4V7.3a4.4 4.4 0 0 1-4.4-4.3z"
+              ></path></svg
+            ></a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; {year} {SITE.name}. All rights reserved.</span>
+      <span
+        ><a href="/privacy-policy/">Privacy policy</a> &middot; <a
+          href="/informed-consent/">Informed consent</a
+        ></span
+      >
+    </div>
   </div>
 </footer>
+
+<div class="mobile-bar">
+  <a class="btn btn--outline" href={PRACTICE.phone.href}
+    ><Icon name="phone" size={18} />Call or text</a
+  >
+  <a
+    class="btn btn--primary"
+    href={PRACTICE.bookingUrl}
+    target="_blank"
+    rel="noopener"
+    data-cta="book_visit_mobile_bar"
+    ><Icon name="calendar" size={18} />Book a visit</a
+  >
+</div>

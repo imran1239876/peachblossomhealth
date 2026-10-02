@@ -5,6 +5,7 @@
  * tracking. Blog posts use BlogPost.astro, which itself wraps this layout.
  */
 import "@/styles/globals.css";
+import "@/styles/peach.css";
 import Seo from "@/components/Seo.astro";
 import GoogleTagManager from "@/components/GoogleTagManager.astro";
 import Header from "@/components/Header.astro";
@@ -42,11 +43,38 @@ if (SITE.address) {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#b55051" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/fonts/italiana-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/montserrat-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {
+      /* Flips <html class="no-js"> to "js" before first paint, so the motion
+         CSS (scroll reveals, hero intro) only hides content when a script is
+         running to reveal it again. */
+    }
+    <script is:inline>
+      document.documentElement.classList.replace("no-js", "js");
+    </script>
     <meta name="generator" content={Astro.generator} />
 
     {
@@ -103,7 +131,7 @@ if (SITE.address) {
       )
     }
     <Header />
-    <main class="flex-1">
+    <main id="main" class="flex-1">
       <slot />
     </main>
     <Footer />

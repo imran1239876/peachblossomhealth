@@ -1,0 +1,36 @@
+---
+/**
+ * A decorative icon from the sprite in IconSprite.astro. Always aria-hidden:
+ * the surrounding link or button text carries the meaning.
+ */
+export type IconName =
+  | "check"
+  | "arrow"
+  | "phone"
+  | "pin"
+  | "mail"
+  | "fax"
+  | "message"
+  | "calendar"
+  | "shield"
+  | "award"
+  | "clock"
+  | "heart"
+  | "star"
+  | "menu"
+  | "chevron"
+  | "blossom-line"
+  | "blossom";
+
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 16, class: className } = Astro.props;
+---
+
+<svg width={size} height={size} class={className} aria-hidden="true"
+  ><use href={`#i-${name}`}></use></svg
+>

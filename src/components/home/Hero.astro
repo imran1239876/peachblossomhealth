@@ -1,0 +1,185 @@
+---
+/**
+ * Homepage hero: a service explorer. The arched photo, floating card and rail
+ * rotate through the four services every six seconds; visitors can pick one
+ * from the rail (tabs, arrow keys). Without JavaScript the first service is
+ * shown and the rail still reads as a list of services. Behaviour lives in
+ * src/scripts/home.ts, motion in the "Hero motion" block of peach.css.
+ */
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+import avatar from "@/assets/home/dr-qureshi-avatar.webp";
+import primaryCare from "@/assets/home/hero-primary-care.webp";
+import weightManagement from "@/assets/home/hero-weight-management.webp";
+import chemicalPeel from "@/assets/home/hero-chemical-peel.webp";
+import earPiercing from "@/assets/home/hero-ear-piercing.webp";
+
+const services = [
+  {
+    label: "Everyday health",
+    title: "Primary Care",
+    chip: "From $60 a month",
+    link: "#services",
+    text: "Chronic care, physicals, urgent visits and in office procedures with your own doctor.",
+    sub: "Chronic, preventive & urgent care",
+    image: primaryCare,
+    alt: "Dr. Rabia Qureshi talking with a patient in an exam room",
+  },
+  {
+    label: "Obesity medicine",
+    title: "Weight Management",
+    chip: "Included for members",
+    link: "#weight-management",
+    text: "Physician guided weight loss with lab work and body composition scans.",
+    sub: "Physician guided weight loss",
+    image: weightManagement,
+    alt: "Dr. Qureshi taking a waist measurement during a weight management visit",
+  },
+  {
+    label: "Skin health",
+    title: "Chemical Peel",
+    chip: "VI Peel",
+    link: "/chemical-peel/",
+    text: "VI Peel treatments for acne, pigmentation and uneven texture.",
+    sub: "Acne, pigmentation & texture",
+    image: chemicalPeel,
+    alt: "Clear, even skin after a professional chemical peel",
+  },
+  {
+    label: "Physician performed",
+    title: "Ear & Nose Piercing",
+    chip: "Sterile technique",
+    link: "/medical-ear-nose-piercing/",
+    text: "Gentle, sterile ear and nose piercing performed by a physician.",
+    sub: "Gentle, sterile, physician led",
+    image: earPiercing,
+    alt: "Close up of an ear before a sterile medical piercing",
+  },
+];
+
+const first = services[0]!;
+---
+
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="hero-grid container">
+    <div class="hero-copy">
+      <span class="label" data-intro style="--n:0"
+        >Direct Primary Care &middot; Bear, Delaware</span
+      >
+      <SplitHeading
+        as="h1"
+        id="hero-title"
+        text="Family Medicine"
+        accent="and Weight Management"
+        reveal={false}
+      />
+      <p class="lead" data-intro style="--n:1">
+        One flat monthly membership gives you unhurried 30 to 60 minute visits,
+        same or next day appointments, and a direct line to your doctor by text,
+        phone or portal. No copays. No deductibles. No surprise bills.
+      </p>
+      <div class="hero-actions" data-intro style="--n:2">
+        <a
+          class="btn btn--primary btn--lg"
+          href={PRACTICE.bookingUrl}
+          target="_blank"
+          rel="noopener"
+          data-cta="book_meet_greet_hero"
+          >Schedule a Free Meet &amp; Greet <Icon name="arrow" size={18} /></a
+        >
+        <a class="btn btn--outline btn--lg" href="#pricing">See pricing</a>
+      </div>
+      <div class="hero-doctor" data-intro style="--n:3">
+        <Image src={avatar} alt="" width={56} densities={[1, 2]} />
+        <p>
+          <strong>Dr. Rabia Qureshi, MD</strong>Double board certified, Family
+          &amp; Obesity Medicine &middot; DelawareToday Top Doctor 2025
+        </p>
+      </div>
+    </div>
+
+    <div class="hero-stage" data-stage>
+      <svg class="hero-bloom" viewBox="0 0 100 100" aria-hidden="true"
+        ><use href="#i-blossom-line"></use></svg
+      >
+      <div class="arch" data-arch>
+        {
+          services.map((s, i) => (
+            <figure class:list={["slide", { "is-active": i === 0 }]} data-slide>
+              <Image
+                src={s.image}
+                widths={[900, 1400]}
+                sizes="(max-width: 1024px) 90vw, 520px"
+                alt={s.alt}
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchpriority={i === 0 ? "high" : undefined}
+              />
+            </figure>
+          ))
+        }
+        <span class="arch-shine" aria-hidden="true"></span>
+      </div>
+
+      <div class="stage-card" data-card aria-live="polite">
+        <div class="card-head">
+          <span class="label" data-card-label>{first.label}</span>
+          <h2 class="stage-title" data-card-title>{first.title}</h2>
+        </div>
+        <div class="card-side">
+          <span class="chip" data-card-chip>{first.chip}</span>
+          <a
+            class="link-arrow"
+            href={first.link}
+            data-card-link
+            aria-label={`Explore ${first.title}`}
+            >Explore <Icon name="arrow" size={18} /></a
+          >
+        </div>
+        <p data-card-text>{first.text}</p>
+      </div>
+
+      <div class="stage-badge">
+        <span class="ic"><Icon name="message" size={20} /></span>
+        <span><strong>Text your doctor</strong>Same or next day visits</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div
+      class="rail"
+      role="tablist"
+      aria-label="Explore our services"
+      data-rail
+    >
+      {
+        services.map((s, i) => (
+          <button
+            type="button"
+            class:list={["rail-item", { "is-active": i === 0 }]}
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+            style={`--n:${i}`}
+            data-label={s.label}
+            data-title={s.title}
+            data-chip={s.chip}
+            data-link={s.link}
+            data-text={s.text}
+          >
+            <span class="num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="name">{s.title}</span>
+            <span class="sub">{s.sub}</span>
+            <span class="bar" aria-hidden="true">
+              <i />
+            </span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>

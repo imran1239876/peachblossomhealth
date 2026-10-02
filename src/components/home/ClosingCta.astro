@@ -1,0 +1,50 @@
+---
+import Icon from "@/components/Icon.astro";
+import { PRACTICE } from "@/lib/practice";
+---
+
+<section class="cta2" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta2-box" data-reveal>
+      <svg class="cta2-bloom" viewBox="0 0 100 100" aria-hidden="true"
+        ><use href="#i-blossom"></use></svg
+      >
+      <div class="cta2-copy">
+        <h2 id="cta-title">
+          Schedule Your Free Meet &amp; Greet <span>with Dr. Qureshi</span>
+        </h2>
+        <p>
+          Schedule a visit with Dr. Rabia Qureshi for personalized,
+          compassionate care tailored to your health needs.
+        </p>
+        <ul class="cta2-points">
+          <li>
+            <strong>Choose Your Service</strong>Select from primary care, weight
+            management, or skin treatments for a fully personalized healthcare
+            experience.
+          </li>
+          <li>
+            <strong>Flexible Scheduling Options</strong>Pick a convenient time
+            that fits your lifestyle and ensures comprehensive care for every
+            visit.
+          </li>
+        </ul>
+      </div>
+      <div class="cta2-actions">
+        <a
+          class="btn btn--white"
+          href={PRACTICE.bookingUrl}
+          target="_blank"
+          rel="noopener"
+          data-cta="book_meet_greet_footer_cta"
+          >Schedule Now <Icon name="arrow" /></a
+        >
+        <a class="cta2-phone" href={PRACTICE.phone.href}
+          ><Icon name="phone" size={18} />Call - Text {
+            PRACTICE.phone.display
+          }</a
+        >
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,91 @@
+---
+import Icon, { type IconName } from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+
+const benefits: {
+  title: string;
+  icon: IconName;
+  button: "btn--outline" | "btn--white";
+  points: string[];
+}[] = [
+  {
+    title: "Quality Care",
+    icon: "heart",
+    button: "btn--outline",
+    points: [
+      "Longer Appointments (30 to 60 minute appointments)",
+      "Thorough, patient centered care",
+      "Care by the same experienced physician, every time",
+    ],
+  },
+  {
+    title: "Accessibility",
+    icon: "clock",
+    button: "btn--white",
+    points: [
+      "Same day or next day availability for acute problems",
+      "Be seen at your appointment time; meaning, little to no wait in the ‘waiting room’",
+      "Directly contact your doctor via email, text or patient portal",
+      "In office, phone or virtual appointments",
+    ],
+  },
+  {
+    title: "Convenience & Transparency",
+    icon: "shield",
+    button: "btn--outline",
+    points: [
+      "Unlimited visits with zero copays or deductibles",
+      "No hidden fees or surprise bills",
+      "Clear and transparent pricing",
+      "Discounted lab work and imaging",
+    ],
+  },
+];
+---
+
+<section
+  class="mb2 section"
+  id="membership-benefits"
+  aria-labelledby="mb-title"
+>
+  <div class="container">
+    <div class="sec-head">
+      <Icon name="blossom-line" size={34} class="pc-bloom" />
+      <SplitHeading id="mb-title" text="Membership" accent="Benefits" />
+    </div>
+    <div class="mb2-grid">
+      {
+        benefits.map((b, i) => (
+          <article
+            class="mb2-card"
+            data-reveal
+            style={`--d:${(i * 0.1).toFixed(1)}s`}
+          >
+            <span class="mb2-ic">
+              <Icon name={b.icon} size={24} />
+            </span>
+            <span class="mb2-n">{String(i + 1).padStart(2, "0")}</span>
+            <h3>{b.title}</h3>
+            <ul class="mb2-list">
+              {b.points.map((p) => (
+                <li>
+                  <Icon name="check" />
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+            <a
+              class={`btn ${b.button}`}
+              href={PRACTICE.bookingUrl}
+              target="_blank"
+              rel="noopener"
+            >
+              Schedule Now
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

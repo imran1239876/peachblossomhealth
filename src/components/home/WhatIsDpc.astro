@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+import visit from "@/assets/home/dpc-visit.webp";
+---
+
+<section class="dpc3 section" id="what-is-dpc" aria-labelledby="dpc-title">
+  <div class="container">
+    <div class="dpc3-grid">
+      <div class="dpc3-media">
+        <div class="dpc3-arch" data-reveal="img">
+          <Image
+            src={visit}
+            widths={[900, 1400]}
+            sizes="(max-width: 1024px) 90vw, 470px"
+            alt="Dr. Qureshi taking notes during an unhurried visit with a patient"
+          />
+        </div>
+        <div class="dpc3-glass" data-reveal style="--d:.25s">
+          <span class="dpc3-glass-k">For a flat monthly fee</span>
+          <ul>
+            <li>No copays</li>
+            <li>No deductibles</li>
+            <li>No surprise fees</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dpc3-copy">
+        <span class="label" data-reveal>Direct Primary Care</span>
+        <SplitHeading
+          id="dpc-title"
+          text="What is Direct Primary Care"
+          accent="(DPC)?"
+        />
+        <p class="lead" data-reveal>
+          Direct Primary Care (DPC) is a simple, transparent model that creates
+          a direct relationship between you and your physician. Instead of
+          working through insurance, your doctor works directly for you. For a
+          flat monthly fee, patients enjoy unlimited access to their physician,
+          no copays, no deductibles, and no surprise fees.
+        </p>
+        <p data-reveal>
+          Without the constraints of insurance, physicians are able to spend
+          more time with each patient, addressing multiple concerns in one
+          unhurried visit. Open and flexible scheduling means you can be seen
+          when you&rsquo;re actually sick, helping reduce unnecessary emergency
+          room visits. When appropriate, care can also be provided by phone or
+          secure messaging, often eliminating the need for an office visit
+          altogether.
+        </p>
+        <p data-reveal>
+          Patients also benefit from deeply discounted labs, imaging, and
+          medications, along with clear, upfront pricing. With Direct Primary
+          Care, there are no unexpected bills, just straightforward, affordable
+          care.
+        </p>
+        <div class="sec-actions" data-reveal>
+          <a class="btn btn--primary" href="/services/"
+            >View All Services <Icon name="arrow" /></a
+          >
+          <a
+            class="btn btn--outline"
+            href={PRACTICE.bookingUrl}
+            target="_blank"
+            rel="noopener">Schedule Now</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

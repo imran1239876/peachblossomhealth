@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+import consultation from "@/assets/home/weight-consultation.webp";
+
+const facts = [
+  { term: "DPC Patients", value: "Included in membership", highlight: true },
+  { term: "90 Minute consultation", value: "$199" },
+  { term: "Monthly Follow Up", value: "$159" },
+  { term: "Body Composition Analysis", value: "Free every four months" },
+];
+---
+
+<section class="wl2 section" id="weight-management" aria-labelledby="wm-title">
+  <div class="wl2-grid container">
+    <div class="wl2-media">
+      <div class="wl2-arch" data-reveal="img">
+        <Image
+          src={consultation}
+          widths={[600, 1000]}
+          sizes="(max-width: 1024px) 90vw, 500px"
+          alt="Dr. Qureshi measuring a patient during a weight management consultation"
+        />
+      </div>
+      <div class="wl2-cert" data-reveal style="--d:.2s">
+        <span><Icon name="award" size={18} /></span>
+        <p>
+          <strong>Board certified</strong>American Board of Obesity Medicine
+        </p>
+      </div>
+      <figure class="wl2-quote" data-reveal style="--d:.35s">
+        <blockquote>
+          <p>
+            &ldquo;I have helped many patients lose hundreds of pounds
+            altogether and am ready to help you too!&rdquo;
+          </p>
+        </blockquote>
+        <figcaption>Dr. Rabia Qureshi</figcaption>
+      </figure>
+    </div>
+    <div class="wl2-copy">
+      <span class="label" data-reveal>Weight Management</span>
+      <SplitHeading id="wm-title" text="We Can Do It" accent="Together!" />
+      <p class="lead" data-reveal>
+        At Peach Blossom Health, we believe in a science backed, compassionate
+        approach to sustainable weight loss. Led by Dr. Rabia Qureshi, a double
+        board certified Family and Obesity Medicine physician, our program is
+        designed to provide personalized care, accountability, and proven
+        medical strategies to help you achieve your health goals.
+      </p>
+      <dl class="wl2-facts" data-reveal>
+        {
+          facts.map((f) => (
+            <div class:list={["wl2-fact", { "wl2-fact--hi": f.highlight }]}>
+              <dt>{f.term}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <div class="sec-actions" data-reveal>
+        <a
+          class="btn btn--primary"
+          href={PRACTICE.bookingUrl}
+          target="_blank"
+          rel="noopener"
+          data-cta="book_weight_management"
+          >Book an Appointment <Icon name="arrow" /></a
+        >
+        <a class="btn btn--outline" href="/weight-management/"
+          >Read about the program</a
+        >
+      </div>
+    </div>
+  </div>
+</section>

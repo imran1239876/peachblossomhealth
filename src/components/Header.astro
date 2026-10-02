@@ -1,50 +1,160 @@
 ---
 /**
- * Site header — plain Astro + Tailwind, zero JavaScript (per the Zikra
- * "static-looking layout stays plain Astro" rule). Swap in the shadcn
- * navigation-menu island only if a site needs interactive menus.
+ * Site header: the icon sprite, skip link, green contact top bar and the
+ * sticky brand header. The Services menu opens on hover / focus-within in
+ * pure CSS; the only script is the mobile menu toggle and the "scrolled"
+ * shadow, both progressive enhancements (the header works without them).
  */
-import { SITE } from "@/config";
+import { Image } from "astro:assets";
+import IconSprite from "@/components/IconSprite.astro";
+import Icon from "@/components/Icon.astro";
+import { PRACTICE } from "@/lib/practice";
+import logo from "@/assets/home/logo.webp";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+const services = [
+  {
+    href: "/primary-care/",
+    label: "Primary Care",
+    note: "Chronic, preventive and urgent care",
+  },
+  {
+    href: "/weight-management/",
+    label: "Weight Management",
+    note: "Physician guided weight loss",
+  },
+  {
+    href: "/chemical-peel/",
+    label: "Chemical Peel",
+    note: "VI Peel skin treatments",
+  },
+  {
+    href: "/medical-ear-nose-piercing/",
+    label: "Medical Ear & Nose Piercing",
+    note: "Sterile, physician performed",
+  },
 ];
 
-const pathname = Astro.url.pathname;
-const isActive = (href: string) =>
-  href === "/" ? pathname === "/" : pathname.startsWith(href);
+const links = [
+  { href: "/pricing/", label: "Pricing" },
+  { href: "/employer-plans/", label: "Employers" },
+  { href: "/about-us/", label: "About" },
+  { href: "/current-patients/", label: "Patients" },
+  { href: "/contact-us/", label: "Contact" },
+];
 ---
 
-<header
-  class="border-border/60 bg-background/80 sticky top-0 z-40 border-b backdrop-blur"
->
-  <div
-    class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6"
-  >
-    <a href="/" class="text-lg font-semibold tracking-tight">{SITE.name}</a>
-    <nav aria-label="Primary">
-      <ul class="flex items-center gap-6 text-sm">
-        {
-          links.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                class:list={[
-                  "hover:text-foreground transition-colors",
-                  isActive(link.href)
-                    ? "text-foreground font-medium"
-                    : "text-muted-foreground",
-                ]}
-              >
-                {link.label}
+<IconSprite />
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <div class="container">
+    <ul>
+      <li>
+        <Icon name="pin" />{PRACTICE.address.line1}, {PRACTICE.address.line2}
+      </li>
+      <li>
+        <Icon name="phone" />Call or text <a href={PRACTICE.phone.href}
+          >{PRACTICE.phone.display}</a
+        >
+      </li>
+      <li>
+        <Icon name="mail" /><a href={`mailto:${PRACTICE.email}`}
+          >{PRACTICE.email}</a
+        >
+      </li>
+    </ul>
+    <p class="note">
+      <span class="dot" aria-hidden="true"></span>Now welcoming new patients
+    </p>
+  </div>
+</div>
+
+<header class="site-header" data-header>
+  <div class="container">
+    <a
+      class="brand"
+      href="/"
+      aria-label="Peach Blossom Direct Primary Care, home"
+    >
+      <Image
+        src={logo}
+        widths={[240, 480]}
+        sizes="136px"
+        alt="Peach Blossom Direct Primary Care"
+        loading="eager"
+      />
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <div class="nav-group">
+        <button type="button" aria-haspopup="true">
+          Services <Icon name="chevron" />
+        </button>
+        <div class="menu">
+          {
+            services.map((s) => (
+              <a href={s.href}>
+                {s.label}
+                <small>{s.note}</small>
               </a>
-            </li>
-          ))
-        }
-      </ul>
+            ))
+          }
+        </div>
+      </div>
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
+    <div class="header-actions">
+      <a class="header-phone" href={PRACTICE.phone.href}
+        ><Icon name="phone" size={18} />{PRACTICE.phone.display}</a
+      >
+      <a
+        class="btn btn--primary btn--sm"
+        href={PRACTICE.bookingUrl}
+        target="_blank"
+        rel="noopener"
+        data-cta="book_meet_greet_header">Book a Free Meet &amp; Greet</a
+      >
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-controls="site-nav"
+        aria-expanded="false"
+        data-menu-toggle
+      >
+        <span class="visually-hidden">Open menu</span>
+        <Icon name="menu" size={22} />
+      </button>
+    </div>
   </div>
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const toggle =
+    document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+
+  if (header) {
+    const onScroll = () =>
+      header.classList.toggle("is-scrolled", window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  if (header && toggle) {
+    const label = toggle.querySelector(".visually-hidden");
+    const setMenu = (open: boolean) => {
+      header.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      if (label) label.textContent = open ? "Close menu" : "Open menu";
+    };
+    toggle.addEventListener("click", () =>
+      setMenu(toggle.getAttribute("aria-expanded") !== "true"),
+    );
+    header
+      .querySelectorAll("#site-nav a")
+      .forEach((a) => a.addEventListener("click", () => setMenu(false)));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setMenu(false);
+    });
+  }
+</script>

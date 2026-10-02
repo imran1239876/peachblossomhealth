@@ -1,0 +1,55 @@
+---
+/**
+ * A display heading whose words rise into place. The words are split here at
+ * build time (the prototype split them in the browser), so there is no layout
+ * shift and nothing to do without JavaScript: `.w` / `.w-in` are plain inline
+ * spans until `.js` + `[data-reveal="split"].is-in` animate them.
+ *
+ * `accent` renders in the brand rose (`.accent`), continuing the stagger.
+ */
+type Level = "h1" | "h2";
+
+interface Props {
+  as?: Level;
+  id: string;
+  text: string;
+  accent?: string;
+  /** Scroll-reveal the words (section headings). The hero animates on load. */
+  reveal?: boolean;
+}
+
+const { as: Tag = "h2", id, text, accent, reveal = true } = Astro.props;
+
+const words = (value: string) => value.trim().split(/\s+/u);
+const lead = words(text);
+const tail = accent ? words(accent) : [];
+---
+
+<Tag id={id} data-reveal={reveal ? "split" : undefined}>
+  {
+    lead.map((word, i) => (
+      <>
+        <span class="w">
+          <span class="w-in" style={`--i:${i}`}>
+            {word}
+          </span>
+        </span>{" "}
+      </>
+    ))
+  }
+  {
+    accent && (
+      <span class="accent">
+        {tail.map((word, i) => (
+          <>
+            <span class="w">
+              <span class="w-in" style={`--i:${lead.length + i}`}>
+                {word}
+              </span>
+            </span>{" "}
+          </>
+        ))}
+      </span>
+    )
+  }
+</Tag>

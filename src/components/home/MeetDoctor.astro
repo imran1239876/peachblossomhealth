@@ -1,0 +1,120 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+import portrait from "@/assets/home/dr-qureshi-arch.webp";
+import award from "@/assets/home/delawaretoday-top-doctor.webp";
+---
+
+<section class="meet section" id="dr-qureshi" aria-labelledby="doctor-title">
+  <div class="container">
+    <div class="meet-grid">
+      <div class="meet-media">
+        <div class="meet-arch" data-reveal="img">
+          <Image
+            src={portrait}
+            widths={[900, 1500]}
+            sizes="(max-width: 1024px) 90vw, 480px"
+            alt="Portrait of Dr. Rabia Qureshi, MD"
+          />
+        </div>
+        <div class="meet-ring" aria-hidden="true">
+          <svg viewBox="0 0 200 200"
+            ><defs
+              ><path
+                id="ring-path"
+                d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"
+              ></path></defs
+            ><text
+              ><textPath
+                href="#ring-path"
+                textLength="486"
+                lengthAdjust="spacing"
+                >{
+                  "Double board certified · Family & Obesity Medicine · "
+                }</textPath
+              ></text
+            ></svg
+          >
+          <svg class="meet-ring-bloom" width="46" height="46"
+            ><use href="#i-blossom"></use></svg
+          >
+        </div>
+        <Image
+          class="meet-award"
+          data-reveal
+          style="--d:.35s"
+          src={award}
+          alt="DelawareToday Top Doctor 2025, Family Medicine: Rabia Qureshi MD"
+        />
+      </div>
+      <div class="meet-copy">
+        <span class="label" data-reveal>Meet your doctor</span>
+        <SplitHeading
+          id="doctor-title"
+          text="Hello! I’m Dr."
+          accent="Rabia Qureshi!"
+        />
+        <p data-reveal>
+          I&rsquo;m Dr. Rabia Qureshi, a double board certified Family Medicine
+          and Obesity Medicine physician with over 13 years of experience in
+          both hospital and in office primary care.
+        </p>
+        <p data-reveal>
+          Throughout my career, I&rsquo;ve built meaningful, long term
+          relationships with my patients, supporting them through every stage of
+          life. My experience caring for severely ill patients in the hospital
+          has strengthened my expertise in managing complex conditions in
+          primary care.
+        </p>
+        <blockquote class="meet-word" data-reveal>
+          <p>
+            If I had to describe myself in one word, it would be <em
+              >&ldquo;relatable.&rdquo;</em
+            >
+          </p>
+          <span
+            >I strive to create a comfortable environment for my patients,
+            building trust as I guide their health and support their families.</span
+          >
+        </blockquote>
+        <div class="meet-actions" data-reveal>
+          <a class="btn btn--primary" href="/about-us/"
+            >More about Dr. Qureshi <Icon name="arrow" /></a
+          >
+          <a
+            class="btn btn--outline"
+            href={PRACTICE.bookingUrl}
+            target="_blank"
+            rel="noopener">Book a free Meet &amp; Greet</a
+          >
+        </div>
+      </div>
+    </div>
+    <ul class="meet-stats">
+      <li data-reveal>
+        <strong><span data-count="13">13</span>+</strong><span
+          >Years in hospital and in office primary care</span
+        >
+      </li>
+      <li data-reveal style="--d:.08s">
+        <strong><span data-count="2">2</span></strong><span
+          >Board certifications: American Board of Family Medicine &amp; Obesity
+          Medicine</span
+        >
+      </li>
+      <li data-reveal style="--d:.16s">
+        <strong>MD</strong><span
+          >St. Matthew&rsquo;s University; Chief Resident, Virtua Family
+          Medicine</span
+        >
+      </li>
+      <li data-reveal style="--d:.24s">
+        <strong>Top Doctor</strong><span
+          >DelawareToday 2025, Family Medicine</span
+        >
+      </li>
+    </ul>
+  </div>
+</section>

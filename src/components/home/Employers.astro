@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import team from "@/assets/home/employer-team.webp";
+
+const points = [
+  {
+    title: "Lower Healthcare Costs",
+    text: "DPC often pairs well with a high deductible insurance plan, reducing overall premiums.",
+  },
+  {
+    title: "Increased Productivity",
+    text: "Employees spend less time away from work for medical visits.",
+  },
+  {
+    title: "Improved Retention and Recruitment",
+    text: "Offering DPC as a benefit shows employees you truly care about their health.",
+  },
+  {
+    title: "Predictable Costs",
+    text: "A fixed monthly rate makes budgeting simple.",
+  },
+];
+---
+
+<section class="em section" id="employers" aria-labelledby="emp-title">
+  <div class="container">
+    <div class="em-grid">
+      <div class="em-copy">
+        <span class="label" data-reveal>Employer plans</span>
+        <SplitHeading
+          id="emp-title"
+          text="Peach Blossom DPC"
+          accent="Employer Plans"
+        />
+        <ul class="em-list" data-reveal>
+          {
+            points.map((p, i) => (
+              <li>
+                <span class="em-n">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="em-side">
+        <div class="em-photo" data-reveal="img">
+          <Image
+            src={team}
+            widths={[700, 1200]}
+            sizes="(max-width: 1024px) 90vw, 480px"
+            alt="Small business team meeting in a bright office"
+          />
+        </div>
+        <div class="em-price" data-reveal style="--d:.2s">
+          <span class="label">Peach Blossom DPC</span>
+          <p class="em-big">$130 <small>/ Month</small></p>
+          <p>
+            Per employee, per month. All primary care included. No copays, no
+            per-visit charges.
+          </p>
+          <p class="em-tag">Age-based flat rate</p>
+          <a class="btn btn--primary" href="/employer-plans/"
+            >See employer plans <Icon name="arrow" /></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

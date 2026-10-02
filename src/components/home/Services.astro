@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import primaryCare from "@/assets/home/svc-primary-care.webp";
+import weightManagement from "@/assets/home/svc-weight-management.webp";
+import earPiercing from "@/assets/home/svc-ear-piercing.webp";
+import chemicalPeel from "@/assets/home/svc-chemical-peel.webp";
+
+const services = [
+  {
+    href: "/primary-care/",
+    title: "Primary Care",
+    desc: "Comprehensive, patient centered care addressing routine, chronic, and preventive health.",
+    image: primaryCare,
+    alt: "Physician checking a smiling patient’s blood pressure",
+    position: "50% 30%",
+  },
+  {
+    href: "/weight-management/",
+    title: "Weight Management",
+    desc: "Personalized, physician guided programs to achieve sustainable weight loss results.",
+    image: weightManagement,
+    alt: "Woman measuring her waist to track weight loss progress",
+    position: "50% 25%",
+  },
+  {
+    href: "/medical-ear-nose-piercing/",
+    title: "Medical Ear & Nose Piercing",
+    desc: "Peach Blossom Health delivers that experience using the Blomdahl Medical Ear Piercing System.",
+    image: earPiercing,
+    alt: "Physician preparing a sterile ear piercing",
+    position: "50% 30%",
+  },
+  {
+    href: "/chemical-peel/",
+    title: "Chemical Peel",
+    desc: "Safe, effective skin treatments that improve tone, texture, and radiance.",
+    image: chemicalPeel,
+    alt: "Clear, even skin after a chemical peel",
+    position: "50% 30%",
+  },
+];
+---
+
+<section class="tsv section" id="services" aria-labelledby="services-title">
+  <div class="container">
+    <div class="tsv-head">
+      <Icon name="blossom-line" size={34} class="pc-bloom" />
+      <SplitHeading id="services-title" text="Treatments" accent="& Services" />
+      <p class="lead" data-reveal>
+        At Peach Blossom Health, we provide compassionate, personalized care in
+        primary care, weight management, and skin rejuvenation, helping patients
+        achieve better health, wellness, and confidence with expert guidance.
+      </p>
+    </div>
+    <div class="tsv-grid">
+      {
+        services.map((s, i) => (
+          <a
+            class="tsv-card"
+            href={s.href}
+            data-reveal
+            style={`--d:${(i * 0.1).toFixed(1)}s`}
+          >
+            <span class="tsv-ph">
+              <Image
+                src={s.image}
+                widths={[700, 1100]}
+                sizes="(max-width: 680px) 90vw, 300px"
+                alt={s.alt}
+                style={`object-position:${s.position}`}
+              />
+            </span>
+            <span class="tsv-glass">
+              <span class="tsv-n">{String(i + 1).padStart(2, "0")}</span>
+              <span class="tsv-row">
+                <span class="tsv-title">{s.title}</span>
+                <span class="tsv-go" aria-hidden="true">
+                  <Icon name="arrow" size={18} />
+                </span>
+              </span>
+              <span class="tsv-desc">{s.desc}</span>
+              <span class="tsv-link">More About This</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+    <div class="arch-foot">
+      <a class="btn btn--primary" href="/services/"
+        >View All Services <Icon name="arrow" size={18} /></a
+      >
+    </div>
+  </div>
+</section>

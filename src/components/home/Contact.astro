@@ -1,0 +1,65 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import { PRACTICE } from "@/lib/practice";
+import reception from "@/assets/home/office-reception.webp";
+---
+
+<section class="ct section" id="visit" aria-labelledby="visit-title">
+  <div class="container">
+    <div class="ct-card">
+      <div class="ct-copy">
+        <span class="label" data-reveal>Contact Us</span>
+        <SplitHeading
+          id="visit-title"
+          text="Your Health, Our Mission."
+          accent="Get in Touch Today."
+        />
+        <ul class="ct-list" data-reveal>
+          <li>
+            <span class="ct-ic"><Icon name="pin" size={20} /></span>
+            <span
+              ><strong>Address</strong><a
+                href={PRACTICE.address.mapsUrl}
+                target="_blank"
+                rel="noopener"
+                >{PRACTICE.address.line1.replace(",", "")}<br />{
+                  PRACTICE.address.line2
+                }</a
+              ></span
+            >
+          </li>
+          <li>
+            <span class="ct-ic"><Icon name="phone" size={20} /></span>
+            <span
+              ><strong>Call - Text</strong><a href={PRACTICE.phone.href}
+                >{PRACTICE.phone.display}</a
+              ></span
+            >
+          </li>
+          <li>
+            <span class="ct-ic"><Icon name="mail" size={20} /></span>
+            <span
+              ><strong>Email Us</strong><a href={`mailto:${PRACTICE.email}`}
+                >{PRACTICE.email}</a
+              ></span
+            >
+          </li>
+          <li>
+            <span class="ct-ic"><Icon name="fax" size={20} /></span>
+            <span><strong>Fax</strong>{PRACTICE.fax}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="ct-photo" data-reveal="img">
+        <Image
+          src={reception}
+          widths={[600, 1000]}
+          sizes="(max-width: 1024px) 90vw, 520px"
+          alt="Peach Blossom front desk with practice brochures"
+        />
+      </div>
+    </div>
+  </div>
+</section>

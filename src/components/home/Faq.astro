@@ -1,0 +1,62 @@
+---
+/**
+ * Native <details> accordion: works with no JavaScript. home.ts only adds the
+ * "one open at a time" behaviour on top.
+ */
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+
+const faqs = [
+  {
+    q: "What is DPC?",
+    a: "Direct Primary Care, or DPC, is a model of healthcare that directly connects the patient and the physician, without administrative bureaucracy. We don’t accept insurance, so are free from the rushed and limited visits that are imposed by insurance companies. Instead, for a monthly fee, we can offer you access to same/next-day visits or telemedicine appointments without co-pays. With direct access to Dr. Qureshi, patients can contact her via phone, secure text, email, or video as needed.",
+  },
+  {
+    q: "Is DPC the same as concierge medicine?",
+    a: "No, DPC is not concierge. Concierge practices often charge a large annual fee AND bill insurance. DPC practices do NOT bill insurance and charge much less than concierge – your monthly fee covers all of your care!",
+  },
+  {
+    q: "Do you take insurance?",
+    a: "I do not process insurance for office visits nor do I provide superbills. However, I will work with insurance to cover medications, labs, imaging, and specialist consults. I do not directly bill or deal with insurance. By cutting the middleman out, I am much more equipped to serve YOU, instead of serving insurance companies.",
+  },
+  {
+    q: "Do I still need insurance?",
+    a: "Yes, you should at least have catastrophic coverage for hospitalizations, specialists, unforeseen illnesses and medications which may not be available through direct care membership.",
+  },
+  {
+    q: "How do I cancel my membership?",
+    a: "If DPC isn’t right for you, no worries. Just send me an email and I’ll take care of the rest.",
+  },
+];
+---
+
+<section class="fq section" id="faq" aria-labelledby="faq-title">
+  <div class="fq-grid container">
+    <div class="fq-head">
+      <span class="label" data-reveal>FAQs</span>
+      <SplitHeading
+        id="faq-title"
+        text="Your Health Queries,"
+        accent="Answered Here."
+      />
+      <a class="btn btn--outline" href="/faq/" data-reveal
+        >See all FAQs <Icon name="arrow" /></a
+      >
+    </div>
+    <div class="faq-list">
+      {
+        faqs.map((f, i) => (
+          <details class="faq-item" open={i === 0} data-reveal>
+            <summary>
+              <h3>{f.q}</h3>
+              <span class="pm" aria-hidden="true" />
+            </summary>
+            <div class="answer">
+              <p>{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

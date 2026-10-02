@@ -1,0 +1,101 @@
+---
+/**
+ * The latest monthly newsletters. These are hard-coded links to the issues
+ * published on the current site; once the newsletters move into the blog
+ * collection this list should come from getCollection("blog") instead.
+ */
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import SplitHeading from "@/components/SplitHeading.astro";
+import aug from "@/assets/home/nl-aug.webp";
+import jul from "@/assets/home/nl-jul.webp";
+import jun from "@/assets/home/nl-jun.webp";
+import may from "@/assets/home/nl-may.webp";
+import apr from "@/assets/home/nl-apr.webp";
+import jan from "@/assets/home/nl-jan.webp";
+
+const issues = [
+  {
+    href: "/august-newsletter/",
+    title: "August Newsletter",
+    date: "August 7, 2026",
+    cover: aug,
+    alt: "Cover of the Peach Blossom August Newsletter",
+  },
+  {
+    href: "/july/",
+    title: "July 2026 Newsletter",
+    date: "July 17, 2026",
+    cover: jul,
+    alt: "Cover of the Peach Blossom July 2026 Newsletter",
+  },
+  {
+    href: "/june-2026-newsletter/",
+    title: "June 2026 Newsletter",
+    date: "June 11, 2026",
+    cover: jun,
+    alt: "Cover of the Peach Blossom June 2026 Newsletter",
+  },
+  {
+    href: "/may-2026-newsletter/",
+    title: "May 2026 Newsletter",
+    date: "May 6, 2026",
+    cover: may,
+    alt: "Cover of the Peach Blossom May 2026 Newsletter",
+  },
+  {
+    href: "/april-2026-newsletter-2/",
+    title: "April 2026 Newsletter",
+    date: "April 14, 2026",
+    cover: apr,
+    alt: "Cover of the Peach Blossom April 2026 Newsletter",
+  },
+  {
+    href: "/january-2026-newsletter/",
+    title: "January 2026 Newsletter",
+    date: "March 4, 2026",
+    cover: jan,
+    alt: "Cover of the Peach Blossom January 2026 Newsletter",
+  },
+];
+---
+
+<section class="bl section" id="blog" aria-labelledby="blog-title">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label" data-reveal>Monthly Newsletter</span>
+      <SplitHeading id="blog-title" text="From Our" accent="Blog" />
+    </div>
+    <div class="nl-grid">
+      {
+        issues.map((n, i) => (
+          <a
+            class="nl-card"
+            href={n.href}
+            data-reveal
+            style={`--d:${((i % 3) * 0.1).toFixed(1)}s`}
+          >
+            <span class="nl-cover">
+              <Image
+                src={n.cover}
+                widths={[380, 760]}
+                sizes="(max-width: 680px) 90vw, 380px"
+                alt={n.alt}
+              />
+            </span>
+            <span class="nl-body">
+              <span class="nl-tag">Blog</span>
+              <span class="nl-title">{n.title}</span>
+              <span class="nl-foot">
+                <span class="nl-date">{n.date}</span>
+                <span class="nl-more">
+                  Read More <Icon name="arrow" />
+                </span>
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
