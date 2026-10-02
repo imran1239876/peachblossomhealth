@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "zikra-astro-starter",
+  "name": "peachblossomhealth",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-07-14",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
