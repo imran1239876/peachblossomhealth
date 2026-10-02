@@ -1,49 +1,451 @@
 ---
+/**
+ * Patient testimonials: the front-desk photo from the practice (the same
+ * picture the current site uses here) in an arch, beside a one-at-a-time
+ * review slider and a booking card.
+ *
+ * The slider is a CSS scroll-snap track, so without JavaScript it is still a
+ * swipeable row of reviews; home.ts adds the arrows, counter and dots.
+ */
+import { Image } from "astro:assets";
 import Icon from "@/components/Icon.astro";
 import SplitHeading from "@/components/SplitHeading.astro";
 import { PRACTICE } from "@/lib/practice";
+import frontDesk from "@/assets/home/office-reception.webp";
 
 const reviews = [
   "Great! My husband started seeing her and she really took the time on all issues instead of rushing ya out like some docs so I then switched to her as well and am very happy. She is very compassionate, she even called my house a couple times to check up on me and see how things are going. Very happy patient here!",
   "Dr. Qureshi is a great doctor. She listens and takes her time to understand your problems. Her bedside manner is awesome. I have been with her for 4 yrs and was devastated when she left her previous practice. I’m so glad my neighbor told me about Dr Qureshi opening her own practice. Certainly a step in the right direction! I plan to enroll and go wherever she goes. I currently live in Dover and will drive all the way up just to see her.",
   "Hello, Dr. Qureshi is one of the best doctors I can recommend to everybody on my family member. She makes sure that everything goes well, asks me a lot of questions and makes sure she sees to my needs. She is very communicable, very nice, makes sure that everything is well planned for me. I can recommend her to everybody else, including my family member, Dr. Qureshi.",
 ];
+const pad = (n: number) => String(n).padStart(2, "0");
 ---
 
 <section class="rv section" aria-labelledby="reviews-title">
-  <div class="container">
-    <div class="sec-head">
-      <Icon name="blossom-line" size={34} class="pc-bloom rv-bloom" />
-      <SplitHeading id="reviews-title" text="Patient" accent="Testimonials" />
+  <div class="tm-grid container">
+    <div class="tm-media">
+      <div class="tm-arch" data-reveal="img">
+        <Image
+          src={frontDesk}
+          widths={[600, 1000]}
+          sizes="(max-width: 1024px) 90vw, 460px"
+          alt="Peach Blossom front desk with practice brochures and business cards"
+        />
+      </div>
+      <figure class="tm-pull" data-reveal style="--d:.25s">
+        <div class="tm-stars" role="img" aria-label="5 out of 5 stars">
+          {Array.from({ length: 5 }, () => <Icon name="star" size={14} />)}
+        </div>
+        <blockquote>
+          <p>&ldquo;She listens and takes her time.&rdquo;</p>
+        </blockquote>
+        <figcaption>A Peach Blossom patient</figcaption>
+      </figure>
     </div>
-    <div class="rv-grid">
-      {
-        reviews.map((quote, i) => (
-          <figure
-            class="rv-card"
-            data-reveal
-            style={`--d:${(i * 0.1).toFixed(1)}s`}
+
+    <div class="tm-body">
+      <div class="tm-head">
+        <span class="label tm-label" data-reveal>Kind words</span>
+        <SplitHeading id="reviews-title" text="Patient" accent="Testimonials" />
+      </div>
+
+      <div class="tm-slider" data-reveal data-reviews>
+        <div
+          class="tm-track"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Patient reviews"
+          data-reviews-track
+        >
+          {
+            reviews.map((quote, i) => (
+              <figure
+                class="tm-slide"
+                aria-roledescription="slide"
+                aria-label={`Review ${i + 1} of ${reviews.length}`}
+              >
+                <span class="tm-mark" aria-hidden="true">
+                  &ldquo;
+                </span>
+                <div class="tm-stars" role="img" aria-label="5 out of 5 stars">
+                  {Array.from({ length: 5 }, () => (
+                    <Icon name="star" />
+                  ))}
+                </div>
+                <blockquote>
+                  <p>{quote}</p>
+                </blockquote>
+                <figcaption>Patient</figcaption>
+              </figure>
+            ))
+          }
+        </div>
+
+        <div class="tm-controls">
+          <p class="tm-count" aria-hidden="true">
+            <span data-reviews-current>01</span> / {pad(reviews.length)}
+          </p>
+          <div class="tm-dots">
+            {
+              reviews.map((_, i) => (
+                <button
+                  type="button"
+                  class:list={["tm-dot", { "is-active": i === 0 }]}
+                  aria-label={`Show review ${i + 1}`}
+                  aria-current={i === 0 ? "true" : undefined}
+                  data-reviews-dot={i}
+                />
+              ))
+            }
+          </div>
+          <div class="tm-arrows">
+            <button
+              type="button"
+              class="tm-arrow tm-arrow--prev"
+              aria-label="Previous review"
+              data-reviews-prev
+            >
+              <Icon name="arrow" size={18} />
+            </button>
+            <button
+              type="button"
+              class="tm-arrow"
+              aria-label="Next review"
+              data-reviews-next
+            >
+              <Icon name="arrow" size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tm-cta" data-reveal>
+        <div>
+          <p class="tm-cta-title">Ready to be our next happy patient?</p>
+          <p class="tm-cta-text">
+            Start with a free Meet &amp; Greet with Dr. Qureshi.
+          </p>
+        </div>
+        <div class="tm-cta-actions">
+          <a
+            class="btn btn--primary tm-shine"
+            href={PRACTICE.bookingUrl}
+            target="_blank"
+            rel="noopener"
+            data-cta="book_meet_greet_testimonials"
+            >Schedule Now <Icon name="arrow" /></a
           >
-            <div class="rv-stars" role="img" aria-label="5 out of 5 stars">
-              {Array.from({ length: 5 }, () => (
-                <Icon name="star" />
-              ))}
-            </div>
-            <blockquote>
-              <p>{quote}</p>
-            </blockquote>
-            <figcaption>Patient</figcaption>
-          </figure>
-        ))
-      }
-    </div>
-    <div class="sec-foot" data-reveal>
-      <a
-        class="btn btn--cream"
-        href={PRACTICE.bookingUrl}
-        target="_blank"
-        rel="noopener">Schedule Now <Icon name="arrow" /></a
-      >
+          <a class="tm-phone" href={PRACTICE.phone.href}
+            ><Icon name="phone" size={16} />{PRACTICE.phone.display}</a
+          >
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .tm-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: center;
+  }
+
+  /* ---------- photo ---------- */
+  .tm-media {
+    position: relative;
+    padding-bottom: 48px;
+  }
+  .tm-arch {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 999px 999px 28px 28px;
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.06);
+  }
+  .tm-arch :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 60%;
+  }
+  .tm-pull {
+    position: absolute;
+    right: -28px;
+    bottom: 0;
+    display: grid;
+    gap: 6px;
+    max-width: 250px;
+    margin: 0;
+    padding: 18px 22px;
+    border-radius: var(--radius-lg);
+    background: #fff;
+    box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.5);
+  }
+  .tm-pull blockquote {
+    margin: 0;
+  }
+  .tm-pull p {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    line-height: 1.2;
+    color: var(--ink);
+    -webkit-text-stroke: 0.02em currentColor;
+  }
+  .tm-pull figcaption {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* ---------- heading ---------- */
+  .tm-head {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .tm-label {
+    color: #f2b9b6;
+  }
+  .tm-head :global(h2) {
+    color: #fbf4ee;
+  }
+  .tm-head :global(h2 .accent) {
+    color: #f2b9b6;
+  }
+
+  /* ---------- slider ---------- */
+  .tm-slider {
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+  }
+  .tm-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .tm-track::-webkit-scrollbar {
+    display: none;
+  }
+  .tm-slide {
+    position: relative;
+    flex: 0 0 100%;
+    display: grid;
+    gap: 16px;
+    align-content: start;
+    margin: 0;
+    padding: clamp(28px, 3.5vw, 44px);
+    scroll-snap-align: start;
+  }
+  .tm-mark {
+    position: absolute;
+    top: 6px;
+    right: 28px;
+    font-family: Georgia, serif;
+    font-size: 7rem;
+    line-height: 1;
+    color: rgba(242, 185, 182, 0.28);
+  }
+  .tm-stars {
+    display: flex;
+    gap: 4px;
+    color: #f4c06a;
+  }
+  .tm-slide blockquote {
+    margin: 0;
+  }
+  .tm-slide p {
+    max-width: 60ch;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .tm-slide figcaption {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f2b9b6;
+  }
+
+  .tm-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px clamp(28px, 3.5vw, 44px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .tm-count {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .tm-count span {
+    color: #fbf4ee;
+  }
+  .tm-dots {
+    display: flex;
+    gap: 8px;
+  }
+  .tm-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition:
+      width 0.35s var(--ease),
+      background-color 0.35s ease;
+  }
+  .tm-dot.is-active {
+    width: 28px;
+    background: #f2b9b6;
+  }
+  .tm-arrows {
+    display: flex;
+    gap: 10px;
+  }
+  .tm-arrow {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .tm-arrow:hover {
+    background: #fbf4ee;
+    color: var(--forest-800);
+  }
+  .tm-arrow--prev :global(svg) {
+    transform: scaleX(-1);
+  }
+
+  /* ---------- booking card ---------- */
+  .tm-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 32px;
+    margin-top: 20px;
+    padding: 22px clamp(24px, 3vw, 32px);
+    border-radius: 24px;
+    background: #fbf4ee;
+  }
+  .tm-cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1.1rem + 0.8vw, 1.75rem);
+    line-height: 1.15;
+    color: var(--forest-800);
+    -webkit-text-stroke: 0.02em currentColor;
+  }
+  .tm-cta-text {
+    margin-top: 4px;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+  .tm-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 22px;
+  }
+  .tm-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--forest-700);
+    text-decoration: none;
+  }
+  .tm-phone:hover {
+    color: var(--forest-800);
+  }
+
+  /* a soft light sweep across the button every few seconds */
+  .tm-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .tm-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 65%
+    );
+    translate: -120% 0;
+    animation: tm-sweep 4.5s ease-in-out 1.5s infinite;
+  }
+  @keyframes tm-sweep {
+    0%,
+    55% {
+      translate: -120% 0;
+    }
+    100% {
+      translate: 120% 0;
+    }
+  }
+
+  /* ---------- tablet & phone ---------- */
+  @media (max-width: 1024px) {
+    /* minmax(0, …) so the slider track can't stretch the column */
+    .tm-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tm-media {
+      max-width: 460px;
+      width: 100%;
+      justify-self: center;
+    }
+    .tm-arch {
+      aspect-ratio: 5 / 4;
+      border-radius: 200px 200px 24px 24px;
+    }
+    .tm-pull {
+      right: 12px;
+    }
+  }
+  @media (max-width: 680px) {
+    .tm-controls {
+      padding-inline: 20px;
+    }
+    .tm-count {
+      display: none;
+    }
+    .tm-cta {
+      padding: 22px 20px;
+    }
+    .tm-cta-actions,
+    .tm-cta-actions .btn {
+      width: 100%;
+    }
+    .tm-cta-actions {
+      justify-content: center;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tm-track {
+      scroll-behavior: auto;
+    }
+  }
+</style>

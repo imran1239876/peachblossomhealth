@@ -225,6 +225,56 @@ function initFaq() {
   }
 }
 
+/* ---------- testimonials: arrows, counter and dots on a scroll-snap track ---------- */
+function initReviews() {
+  const root = $("[data-reviews]");
+  const track = root && $("[data-reviews-track]", root);
+  if (!root || !track) return;
+
+  const slides = Array.from(track.children) as HTMLElement[];
+  const dots = $$<HTMLButtonElement>("[data-reviews-dot]", root);
+  const counter = $("[data-reviews-current]", root);
+  let current = 0;
+
+  const go = (i: number) => {
+    const n = (i + slides.length) % slides.length;
+    track.scrollTo({
+      left: n * track.clientWidth,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  };
+
+  const sync = () => {
+    const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+    if (i === current) return;
+    current = i;
+    if (counter) counter.textContent = String(i + 1).padStart(2, "0");
+    dots.forEach((dot, k) => {
+      dot.classList.toggle("is-active", k === i);
+      if (k === i) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+  };
+
+  let raf = 0;
+  track.addEventListener(
+    "scroll",
+    () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(sync);
+    },
+    { passive: true },
+  );
+  $("[data-reviews-prev]", root)?.addEventListener("click", () =>
+    go(current - 1),
+  );
+  $("[data-reviews-next]", root)?.addEventListener("click", () =>
+    go(current + 1),
+  );
+  dots.forEach((dot, k) => dot.addEventListener("click", () => go(k)));
+}
+
 initHero();
 initReveals();
 initFaq();
+initReviews();
