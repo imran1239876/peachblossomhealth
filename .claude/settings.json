@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm build)",
+      "Bash(pnpm preview)",
+      "Bash(pnpm check)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm sync)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:fix)",
+      "Bash(pnpm format)",
+      "Bash(pnpm format:check)",
+      "Bash(pnpm test)",
+      "Bash(pnpm test:watch)",
+      "Bash(pnpm cf-typegen)",
+      "Bash(pnpm exec astro:*)",
+      "Bash(pnpm dlx shadcn@latest add:*)",
+      "Bash(wrangler dev)",
+      "Bash(wrangler types)",
+      "Bash(wrangler r2 bucket create:*)",
+      "Bash(git:*)"
+    ],
+    "deny": [
+      "Read(./.dev.vars)",
+      "Bash(wrangler secret put:*)",
+      "Bash(wrangler r2 bucket delete:*)",
+      "Bash(wrangler delete:*)",
+      "Bash(rm -rf:*)"
+    ]
+  }
+}

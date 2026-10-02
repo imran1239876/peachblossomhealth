@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zikra-astro-starter",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-07-14",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+  // Serve the prerendered Astro output as static assets; the Worker handles
+  // only on-demand routes (the Actions endpoint).
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist",
+  },
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+  },
+
+  // Required Worker Secrets. Wrangler validates these on deploy and includes
+  // them in generated binding types without reading local .dev.vars. Both are
+  // required because the forms pipeline cannot run without either: the site
+  // verifies Turnstile itself, and the portal is the one durable lead sink, so
+  // a missing PORTAL_ORG_KEY would drop every submission (see AGENTS.md §5).
+  //
+  // There are exactly TWO required secrets no matter how many forms the site
+  // grows: PORTAL_ORG_KEY is the organization's `pok_…` API key, and one org
+  // key authenticates every form in that org, on every website in it. Adding a
+  // form is a line in the FORMS registry, never a new secret here.
+  "secrets": {
+    "required": ["TURNSTILE_SECRET", "PORTAL_ORG_KEY"],
+  },
+
+  // Secret values are NEVER listed here. Local dev reads values from .dev.vars;
+  // production uses Worker Secrets:
+  //   wrangler secret put TURNSTILE_SECRET
+  //   wrangler secret put PORTAL_ORG_KEY
+  //   wrangler secret put Z360_TOKEN        # only if z360Enabled is true
+}

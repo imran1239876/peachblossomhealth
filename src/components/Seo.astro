@@ -1,0 +1,54 @@
+---
+/**
+ * The shared <Seo> component — used (via BaseLayout) on every page.
+ * Fills title/description/canonical/Open Graph/Twitter from props + SITE config.
+ */
+import { SEO } from "astro-seo";
+import { SITE } from "@/config";
+
+export interface Props {
+  /** Page title. The site name is appended automatically. Omit on the home page. */
+  title?: string;
+  /** Meta description. Aim for ~150–160 characters. Falls back to SITE.description. */
+  description?: string;
+  /** Canonical path or absolute URL. Defaults to the current pathname. */
+  canonical?: string;
+  /** OG/Twitter image (path or absolute URL). Defaults to SITE.defaultOgImage. */
+  image?: string;
+  /** Set true to keep a page out of search results (e.g. thank-you pages). */
+  noindex?: boolean;
+  /** Open Graph type. Use "article" on blog posts. */
+  type?: "website" | "article";
+}
+
+const {
+  title,
+  description = SITE.description,
+  canonical,
+  image = SITE.defaultOgImage,
+  noindex = false,
+  type = "website",
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${SITE.name}` : SITE.defaultTitle;
+const canonicalURL = new URL(canonical ?? Astro.url.pathname, SITE.url).href;
+const imageURL = new URL(image, SITE.url).href;
+---
+
+<SEO
+  title={fullTitle}
+  description={description}
+  canonical={canonicalURL}
+  noindex={noindex}
+  nofollow={noindex}
+  openGraph={{
+    basic: { title: fullTitle, type, image: imageURL, url: canonicalURL },
+    optional: { description, siteName: SITE.name },
+  }}
+  twitter={{
+    card: "summary_large_image",
+    title: fullTitle,
+    description,
+    image: imageURL,
+  }}
+/>

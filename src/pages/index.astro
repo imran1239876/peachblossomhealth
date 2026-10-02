@@ -1,0 +1,233 @@
+---
+/**
+ * Home page — a static, zero-JavaScript marketing landing page.
+ *
+ * Uses the shared BaseLayout (which supplies SITE.defaultTitle, sitewide SEO,
+ * header and footer). CTAs are plain anchors styled with buttonVariants, and
+ * icons are inline SVG so nothing hydrates on the client.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { SITE } from "@/config";
+
+const features = [
+  {
+    title: "Blazing-fast static pages",
+    description:
+      "Prerendered HTML served from Cloudflare's global edge. Pages load in milliseconds, so visitors — and search engines — never wait.",
+    icon: "bolt",
+  },
+  {
+    title: "Forms that never lose a lead",
+    description:
+      "Every submission is validated, spam-filtered, and durably stored before a reply is sent. A dropped enquiry is a lost customer, and that won't happen here.",
+    icon: "shield",
+  },
+  {
+    title: "SEO built in from day one",
+    description:
+      "Clean metadata, structured data, sitemaps, and social cards ship out of the box — the technical groundwork for ranking is already done.",
+    icon: "search",
+  },
+  {
+    title: "Effortless to maintain",
+    description:
+      "Publish posts in Markdown and update your site with a single config file. No fragile plugins, no surprise bills, no server to babysit.",
+    icon: "sparkles",
+  },
+];
+
+const stats = [
+  { value: "100/100", label: "Typical Lighthouse performance" },
+  { value: "0", label: "Leads lost to a broken form" },
+  { value: "< 50ms", label: "Edge response time worldwide" },
+];
+---
+
+<BaseLayout
+  description="A fast, secure, search-ready website — prerendered on Cloudflare's edge with lead capture that never drops a submission."
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div
+      class="from-primary/5 pointer-events-none absolute inset-0 bg-gradient-to-b to-transparent"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:py-32"
+    >
+      <div class="mx-auto max-w-3xl text-center">
+        <Badge variant="secondary" className="mb-6">
+          Built on {SITE.name}
+        </Badge>
+        <h1
+          class="text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+        >
+          A faster, safer website your business can grow on
+        </h1>
+        <p
+          class="text-muted-foreground mx-auto mt-6 max-w-2xl text-lg text-pretty sm:text-xl"
+        >
+          {SITE.name} pairs edge-fast pages with rock-solid lead capture and SEO that's
+          handled for you — so you can focus on customers instead of plumbing.
+        </p>
+        <div
+          class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        >
+          <a href="/contact" class={buttonVariants({ size: "lg" })}>
+            Get in touch
+          </a>
+          <a
+            href="/blog"
+            class={buttonVariants({ variant: "ghost", size: "lg" })}
+          >
+            Read the blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features / value grid -->
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+        Everything a small business site needs
+      </h2>
+      <p class="text-muted-foreground mt-4 text-lg text-pretty">
+        The hard parts of a modern website — speed, reliability, and
+        discoverability — come standard.
+      </p>
+    </div>
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        features.map((feature) => (
+          <Card className="h-full">
+            <CardContent className="flex h-full flex-col">
+              <span
+                class="bg-primary/10 text-primary mb-4 inline-flex size-11 items-center justify-center rounded-lg"
+                aria-hidden="true"
+              >
+                {feature.icon === "bolt" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="size-5"
+                  >
+                    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                  </svg>
+                )}
+                {feature.icon === "shield" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="size-5"
+                  >
+                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                )}
+                {feature.icon === "search" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="size-5"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                )}
+                {feature.icon === "sparkles" && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="size-5"
+                  >
+                    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+                  </svg>
+                )}
+              </span>
+              <CardTitle className="text-lg">{feature.title}</CardTitle>
+              <CardDescription className="mt-2">
+                {feature.description}
+              </CardDescription>
+            </CardContent>
+          </Card>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Trust / stats strip -->
+  <section class="bg-muted/40 border-y">
+    <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <dl class="grid grid-cols-1 gap-8 text-center sm:grid-cols-3">
+        {
+          stats.map((stat) => (
+            <div class="flex flex-col items-center">
+              <dt class="text-4xl font-bold tracking-tight sm:text-5xl">
+                {stat.value}
+              </dt>
+              <dd class="text-muted-foreground mt-2 text-sm text-pretty">
+                {stat.label}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- Final CTA band -->
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+    <div
+      class="bg-primary text-primary-foreground relative overflow-hidden rounded-2xl px-6 py-14 text-center sm:px-12"
+    >
+      <h2 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+        Ready to put your business online — properly?
+      </h2>
+      <p
+        class="text-primary-foreground/80 mx-auto mt-4 max-w-xl text-lg text-pretty"
+      >
+        Tell us what you're building. We'll help you launch a site that's fast,
+        secure, and ready to win customers.
+      </p>
+      <div class="mt-8">
+        <a
+          href="/contact"
+          class={buttonVariants({ variant: "secondary", size: "lg" })}
+        >
+          Start the conversation
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

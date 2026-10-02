@@ -1,0 +1,43 @@
+# Approve native build scripts required by the toolchain:
+#   esbuild  — Astro/Vite bundling
+#   sharp    — build-time image optimization (astro:assets)
+#   workerd  — local Cloudflare Worker runtime (platformProxy / wrangler dev)
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - vitest@4.1.11
+  - "@vitest/mocker@4.1.11"
+  - lucide-react@1.23.0
+  - nanoid@3.3.18
+
+# eslint-plugin-jsx-a11y has not yet widened its peer range to ESLint 10, but
+# the current plugin passes this repository's full React accessibility lint.
+peerDependencyRules:
+  allowedVersions:
+    "eslint-plugin-jsx-a11y>eslint": "10"
+
+# Security patches for transitive deps flagged by `pnpm audit` (pnpm 11 reads
+# overrides from here, not package.json). Each is scoped to the vulnerable
+# range only, so the override lifts automatically once the upstream lockfile
+# pulls a patched version. These are NOT framework bumps — see the
+# Astro-baseline note in AGENTS.md.
+overrides:
+  "sharp@<0.35.0": ">=0.35.0"
+  "fast-xml-parser@<5.10.1": ">=5.10.1"
+  # fast-uri's 4.x line picked up its own host-confusion advisory, superseding
+  # the earlier "<3.1.4" entry — pnpm honours only one override per package
+  # name, so the two must be a single rule rather than one per major.
+  "fast-uri@<4.1.2": ">=4.1.2 <5"
+  # undici <7.29.0 (via wrangler → miniflare): cross-user information
+  # disclosure, response desynchronization, CRLF and cookie-attribute injection.
+  # Held to the 7.x line — undici 8 is a major that miniflare does not expect.
+  "undici@<7.29.0": ">=7.29.0 <8"
+  # brace-expansion DoS, present on two independent major lines in the tree.
+  # Each target is capped to its own major so neither consumer is jumped
+  # across a breaking change.
+  "brace-expansion@<1.1.18": ">=1.1.18 <2"
+  "brace-expansion@5.0.7": ">=5.0.9 <6"
+  # postcss <=8.5.22: incomplete fix of GHSA-6g55-p6wh-862q.
+  "postcss@<8.5.23": ">=8.5.23 <9"

@@ -1,0 +1,35 @@
+---
+/**
+ * The Google Tag Manager container snippet — the ONE tag we hardcode. GA4, Ads
+ * conversions, Clarity and the rest are configured inside the container, so
+ * marketing can add a tag without a deploy. Rendered by BaseLayout as high in
+ * <head> as possible; add it to any alternate layout too, or those pages
+ * silently collect nothing. See ANALYTICS-SEO.md.
+ *
+ * Deliberately NOT behind Partytown: container-managed tags (Ads conversions,
+ * Consent Mode, Clarity) break inside a web worker.
+ *
+ * Deliberately still loaded from googletagmanager.com: Cloudflare's Google tag
+ * gateway already proxies GA4's *measurement* hits to a first-party path on
+ * this domain, so the container URL stays standard. Verify the gateway from the
+ * collection endpoint, never from this script URL.
+ *
+ * Lives in its own component rather than inline in the layout because an empty
+ * <script> inside an Astro `{cond && …}` expression gets self-closed by
+ * Prettier, which then crashes eslint-plugin-astro's preprocessor. At a
+ * component's top level the tags are formatted as plain HTML and survive both.
+ */
+export interface Props {
+  /** GTM container ID, e.g. "GTM-XXXXXXX". Comes from SITE.gtmId. */
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+</script>
+<script is:inline async src={`https://www.googletagmanager.com/gtm.js?id=${id}`}
+></script>

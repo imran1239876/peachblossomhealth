@@ -1,0 +1,86 @@
+---
+title: "How we build fast, SEO-friendly sites on Astro"
+description: "A practical look at the choices behind the Zikra starter: static rendering, disciplined metadata, structured data, and images that stay sharp without slowing pages."
+pubDate: 2026-06-15
+author: "Zikra Team"
+tags: ["seo", "performance", "astro"]
+draft: false
+---
+
+Speed and search visibility are not separate projects. A page that loads fast is
+a page search engines crawl happily and readers stay on, and the same decisions
+that make a page quick tend to make it easy to index. This post walks through the
+choices baked into the Zikra starter and why each one earns its place.
+
+If you are new here, start with the [welcome post](/blog) for the tour. This
+article goes a level deeper into the reasoning.
+
+## Static first, JavaScript only where it pays
+
+Every page in the starter is prerendered to static HTML and served from
+Cloudflare's edge. There is no client-side framework booting up before a visitor
+can read the page — the HTML _is_ the page. That single decision is responsible
+for most of the performance win, because the fastest JavaScript is the JavaScript
+you never send.
+
+Interactivity is added surgically. When a component genuinely needs to run in the
+browser — a form with live validation, for example — it becomes an island that
+hydrates on its own while the rest of the page stays static. The result is a site
+that feels instant on a phone over a weak connection, which is exactly the
+audience most marketing sites underserve.
+
+## Metadata as a discipline, not an afterthought
+
+Good SEO is mostly consistency, and consistency is easiest when it is automated.
+Every page runs through one shared SEO component, so:
+
+- Titles follow one pattern and always include the site name.
+- Descriptions have a real character budget the schema enforces at build time.
+- Canonical URLs are generated from the site URL, so there is never a stray
+  duplicate-content signal from a trailing slash or a preview domain.
+- Open Graph and Twitter cards are filled from the same source of truth, so a
+  shared link always looks intentional.
+
+Because these come from configuration and frontmatter rather than being typed by
+hand on each page, they cannot drift. A new post inherits correct metadata simply
+by existing.
+
+## Structured data that earns rich results
+
+Search engines reward pages that tell them what they are. The starter emits
+`LocalBusiness` structured data sitewide and `Article` structured data on every
+blog post, complete with the headline, publish and modified dates, and author.
+This is what makes a post eligible for richer search presentation, and it costs
+nothing at runtime because it is rendered into the static HTML.
+
+The same philosophy extends to machine-readable endpoints: an RSS feed for
+subscribers and readers, a sitemap for crawlers, and an `llms.txt` file that
+gives AI answer engines a clean map of the site's key pages and posts. As more
+traffic arrives through AI assistants rather than traditional search, having a
+tidy, explicit summary of your content is quietly becoming table stakes.
+
+## Images that stay sharp without the weight
+
+Images are the easiest way to wreck a fast site, so the starter routes them
+through Astro's asset pipeline. Imported images are optimized at build time,
+served in modern formats, and given explicit dimensions so the layout does not
+jump as they load. Hero images get sensible loading behavior, and every image
+requires alt text — which is both an accessibility requirement and a small SEO
+signal.
+
+The practical rule for authors is short: import images from `src/assets/` rather
+than hardcoding paths to `public/`, and always write meaningful alt text. The
+pipeline handles the rest.
+
+## Putting it together
+
+None of these ideas is exotic. What makes them effective is that they are decided
+once, in the foundation, and inherited by every site and every post automatically.
+A new article is fast and well-optimized not because the author remembered a
+checklist, but because the correct behavior is the default and the wrong behavior
+is hard to reach.
+
+That is the whole thesis of the starter: make the fast, accessible, well-indexed
+version the path of least resistance. When you are ready to see it in action,
+publish a post of your own and check how it renders — or [get in touch](/contact)
+if you want a hand tailoring the foundation to your project.

@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    versioning-strategy: increase
+    groups:
+      # Keep framework/runtime peers together across dependencies and devDependencies.
+      astro-cloudflare-minor-and-patch:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+          - "@cloudflare/vite-plugin"
+          - "@cloudflare/workers-types"
+          - "wrangler"
+          - "vite"
+          # Astro Actions and application schemas must use compatible Zod types.
+          - "zod"
+        update-types:
+          - "minor"
+          - "patch"
+      runtime-minor-and-patch:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-minor-and-patch:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"

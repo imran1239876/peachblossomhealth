@@ -1,0 +1,101 @@
+---
+/**
+ * Layout for a single blog post. Wraps BaseLayout as an "article", renders the
+ * post chrome (title, byline, hero image, tags) and the MDX body in a readable
+ * prose container, and emits Article JSON-LD for rich results.
+ *
+ * Pass the whole collection entry; the MDX body goes in the default slot.
+ */
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { Schema } from "astro-seo-schema";
+import type { WithContext, Article } from "schema-dts";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Badge } from "@/components/ui/badge";
+
+export interface Props {
+  entry: CollectionEntry<"blog">;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const dateFmt = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const published = dateFmt.format(data.pubDate);
+const updated = data.updatedDate ? dateFmt.format(data.updatedDate) : null;
+
+const articleSchema: WithContext<Article> = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: data.title,
+  description: data.description,
+  datePublished: data.pubDate.toISOString(),
+  dateModified: (data.updatedDate ?? data.pubDate).toISOString(),
+  author: { "@type": "Person", name: data.author },
+};
+if (data.image) articleSchema.image = data.image.src;
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  canonical={data.canonical}
+  image={data.image?.src}
+  type="article"
+>
+  <Schema item={articleSchema} />
+
+  <article class="mx-auto max-w-prose px-4 py-16 sm:px-6">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+        {data.title}
+      </h1>
+      <p class="text-muted-foreground mt-4 text-sm">
+        By {data.author} ·{" "}
+        <time datetime={data.pubDate.toISOString()}>{published}</time>
+        {
+          updated && (
+            <>
+              {" · Updated "}
+              <time datetime={data.updatedDate!.toISOString()}>{updated}</time>
+            </>
+          )
+        }
+      </p>
+    </header>
+
+    {
+      data.image && (
+        <Image
+          src={data.image}
+          alt={data.imageAlt ?? data.title}
+          class="mb-10 aspect-video w-full rounded-xl border object-cover"
+          loading="eager"
+        />
+      )
+    }
+
+    <div
+      class="prose text-foreground [&_a]:text-primary [&_blockquote]:border-border [&_blockquote]:text-muted-foreground [&_code]:bg-muted [&_pre]:bg-muted max-w-none leading-7 [&_a]:underline [&_a]:underline-offset-4 [&_blockquote]:border-l-2 [&_blockquote]:pl-4 [&_blockquote]:italic [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_h2]:mt-10 [&_h2]:scroll-mt-24 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-semibold [&_li]:my-1 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-4 [&_pre]:my-6 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:p-4 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6"
+    >
+      <slot />
+    </div>
+
+    {
+      data.tags.length > 0 && (
+        <footer class="mt-12 flex flex-wrap gap-2 border-t pt-6">
+          {data.tags.map((tag) => (
+            <a href={`/blog/tags/${encodeURIComponent(tag)}`}>
+              <Badge variant="secondary">#{tag}</Badge>
+            </a>
+          ))}
+        </footer>
+      )
+    }
+  </article>
+</BaseLayout>

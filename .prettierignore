@@ -1,0 +1,11 @@
+dist/
+.astro/
+node_modules/
+.wrangler/
+.impeccable/
+pnpm-lock.yaml
+worker-configuration.d.ts
+
+# Project skills are documentation/vendor inputs for agents, not app source.
+.agents/skills/
+.claude/skills/

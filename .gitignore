@@ -1,0 +1,31 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+.pnpm-store/
+
+# Cloudflare / Wrangler
+.wrangler/
+
+# secrets — local dev only, never commit (keep the .example)
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# build-time env vars (non-secret, but per-machine / per-environment) — keep
+# the .example, which the `.env.*` line above would otherwise swallow
+.env
+.env.*
+!.env.example
+
+# logs & OS
+*.log
+npm-debug.log*
+.DS_Store
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/

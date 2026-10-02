@@ -1,0 +1,163 @@
+---
+/**
+ * The base HTML shell for every page: <head> (SEO + LocalBusiness schema + the
+ * GTM container), header, main slot, footer, and the sitewide dataLayer click
+ * tracking. Blog posts use BlogPost.astro, which itself wraps this layout.
+ */
+import "@/styles/globals.css";
+import Seo from "@/components/Seo.astro";
+import GoogleTagManager from "@/components/GoogleTagManager.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { Schema } from "astro-seo-schema";
+import type { WithContext, LocalBusiness } from "schema-dts";
+import { SITE } from "@/config";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+  type?: "website" | "article";
+}
+
+const props = Astro.props;
+const gtmId = SITE.gtmId;
+const gaId = SITE.gaMeasurementId;
+
+// Sitewide LocalBusiness structured data (astro-seo-schema).
+const businessSchema: WithContext<LocalBusiness> = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": new URL("#business", SITE.url).href,
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+};
+if (SITE.telephone) businessSchema.telephone = SITE.telephone;
+if (SITE.address) {
+  businessSchema.address = { "@type": "PostalAddress", ...SITE.address };
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    {
+      /* Kept as high in <head> as possible so the container starts loading
+         before anything else on the page. */
+      gtmId && <GoogleTagManager id={gtmId} />
+    }
+
+    <Seo {...props} />
+    <Schema item={businessSchema} />
+
+    {
+      /* Bare GA4 for a site that runs no container, off the main thread via
+         Partytown. Gated on !gtmId so the container always wins when a site
+         sets both, because the two cannot coexist: rendering a
+         type="text/partytown" script is what boots Partytown, and Partytown
+         (forward: ["dataLayer.push", "gtag"]) then patches
+         window.dataLayer.push on the main thread — so the delegated events
+         below would be forwarded into the worker, where the main-thread
+         container can never see them. Both would also load GA4 twice, once
+         here and once from the container, doubling every page_view. */
+      !gtmId && gaId && (
+        <>
+          <script
+            type="text/partytown"
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          />
+          <script
+            type="text/partytown"
+            is:inline
+            set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`}
+          />
+        </>
+      )
+    }
+  </head>
+  <body
+    class="bg-background text-foreground flex min-h-dvh flex-col antialiased"
+  >
+    {
+      /* Must be the first thing in <body> — GTM's no-JS fallback. */
+      gtmId && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    {
+      /* The shared Zikra dataLayer vocabulary. One delegated listener for the
+         whole site instead of per-element wiring, so every forked site gets
+         phone_click and cta_<name> without a page having to wire anything up.
+         Inline rather than a bundled module so a zero-JS page stays a
+         zero-request page and clicks are caught as soon as the markup exists.
+         Not gated on SITE.gtmId: the dataLayer is just an array until something
+         reads it, and the gateway can inject a container this page never
+         declared.
+
+         It pushes to dataLayer and never calls window.gtag() — under a GTM-only
+         setup window.gtag is undefined and the call vanishes silently. The
+         { event, ...params } shape is what a GTM Custom Event trigger reads.
+
+         The rationale lives out here because an is:inline script ships to the
+         browser verbatim, comments and all. */
+    }
+    <script is:inline>
+      (function () {
+        const trackEvent = (name, params) => {
+          try {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push(Object.assign({ event: name }, params));
+          } catch {
+            /* analytics must never break the page */
+          }
+        };
+
+        document.addEventListener("click", (event) => {
+          const target = event.target instanceof Element ? event.target : null;
+          if (!target) return;
+
+          const phone = target.closest('a[href^="tel:"]');
+          if (phone) {
+            trackEvent("phone_click", {
+              link_url: phone.getAttribute("href") || "",
+            });
+          }
+
+          // data-cta="request_quote" fires cta_request_quote. A blank
+          // data-cta would push the meaningless name "cta_", so skip it.
+          const cta = target.closest("[data-cta]");
+          const name = cta?.dataset.cta?.trim();
+          if (cta && name) {
+            trackEvent("cta_" + name, {
+              link_url: cta.getAttribute("href") || "",
+            });
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

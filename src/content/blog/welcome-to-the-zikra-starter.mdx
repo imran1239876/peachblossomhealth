@@ -1,0 +1,80 @@
+---
+title: "Welcome to the Zikra Starter: a fast foundation"
+description: "Meet the Zikra Astro starter — the shared foundation behind every agency site, built for speed, SEO, and a lead pipeline that never drops a submission."
+pubDate: 2026-06-01
+author: "Zikra Team"
+tags: ["announcements", "astro", "getting-started"]
+draft: false
+# To add a hero image, drop the file in src/assets/ and reference it here.
+# The `image()` schema helper imports it so astro:assets can optimize it, and
+# `imageAlt` is required whenever `image` is set:
+#
+# image: "../../assets/welcome-hero.jpg"
+# imageAlt: "The Zikra starter dashboard on a laptop screen"
+---
+
+Welcome to the Zikra Astro starter. This is the reusable foundation that every
+Zikra agency site is forked from, and this post is both an introduction and a
+working example of a correctly authored article. If you are reading it on a
+freshly cloned site, everything you see here — the layout, the SEO tags, the RSS
+feed, the tag pages — is already wired up and waiting for your content.
+
+The goal of the starter is simple: give a new project a production-grade baseline
+on day one, so the team spends its time on the site's actual message instead of
+re-solving problems that every site has already solved. Fast pages, clean markup,
+sensible defaults, and no surprises when it ships to the edge.
+
+## What comes in the box
+
+The starter ships with the pieces a modern marketing site needs, already
+configured and verified:
+
+- **Astro 7** rendering static pages to Cloudflare's edge, so visitors get HTML
+  the instant they arrive rather than waiting on a client-side framework.
+- **A blog content collection** with a typed frontmatter schema. Titles,
+  descriptions, dates, and tags are validated at build time, so a malformed post
+  fails the build instead of quietly shipping broken.
+- **SEO out of the box**: per-page titles and descriptions, canonical URLs, Open
+  Graph and Twitter cards, `LocalBusiness` and `Article` structured data, a
+  sitemap, an RSS feed, and an `llms.txt` file for AI answer engines.
+- **A lead pipeline** built around a validated form, Turnstile spam protection,
+  and durable storage — so a submission is never silently lost.
+
+Each of these is a place where a hand-rolled site tends to cut corners. Bundling
+them into the foundation means every forked site inherits the good version.
+
+## Authoring your first post
+
+Adding a post is deliberately boring, which is the point. Create an `.mdx` file in
+`src/content/blog/`, fill in the frontmatter, and write your body starting at an
+`H2` — the `H1` is rendered from the post title by the layout, so you never write
+it yourself. Keep the description between 150 and 160 characters; it becomes the
+meta description and the card summary on the [blog index](/blog).
+
+Tags are lowercase and become their own archive pages automatically. Give a post
+a couple of focused tags and it will appear on each matching tag page with no
+extra work. When a post is still in progress, set `draft: true` and it disappears
+from listings, the sitemap, and the RSS feed in production while staying visible
+in local development.
+
+A few conventions worth internalizing early:
+
+1. Write the description for a human skimming search results, not for a keyword
+   crawler. It is the first sentence a reader sees.
+2. Link internally where it helps. Sending readers to related posts or to the
+   [contact page](/contact) keeps them on the site and helps search engines
+   understand how pages relate.
+3. Prefer real headings over bold text. Headings give the page structure that
+   both assistive technology and search engines rely on.
+
+## Where to go next
+
+From here, open `src/config.ts` and set the site name, URL, and description —
+those values flow into every SEO tag and structured-data block on the site. Then
+replace these two sample posts with your own, wire up the contact form, and you
+have a launchable site.
+
+If you want the full authoring reference, the second sample post walks through
+[how we build fast, SEO-friendly sites](/blog) on this exact foundation. Between
+the two, you have a complete picture of how a Zikra site goes from clone to
+launch — and a template you can copy for every article after this one.

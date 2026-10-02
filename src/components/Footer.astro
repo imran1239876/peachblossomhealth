@@ -1,0 +1,19 @@
+---
+import { SITE } from "@/config";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-border/60 border-t">
+  <div
+    class="text-muted-foreground mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-8 text-sm sm:flex-row sm:px-6"
+  >
+    <p>&copy; {year} {SITE.name}. All rights reserved.</p>
+    <p>
+      Built with <a
+        href="https://astro.build"
+        class="hover:text-foreground underline underline-offset-4">Astro</a
+      > on the Zikra platform.
+    </p>
+  </div>
+</footer>

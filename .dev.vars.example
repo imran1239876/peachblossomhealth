@@ -1,0 +1,56 @@
+# ---------------------------------------------------------------------------
+# Local development secrets for the Cloudflare Worker RUNTIME.
+#
+# Copy this file to `.dev.vars` (which is gitignored) and fill in real values.
+# NEVER commit `.dev.vars`. In production these live in Cloudflare Worker
+# Secrets (`wrangler secret put <NAME>`), not here and not in wrangler.jsonc.
+#
+# This file is for SECRETS ONLY. Non-secret, BUILD-time configuration — the
+# public Turnstile sitekey, the portal origin — belongs in `.env` instead; see
+# `.env.example`. A build-time variable cannot be a Worker Secret (the pages
+# are prerendered, so nothing runtime exists yet) and a Worker Secret must
+# never be a build-time variable (it would be baked into the bundle).
+#
+# There are three entries below and there will never be more, however many
+# forms the site grows: two required, one optional.
+# ---------------------------------------------------------------------------
+
+# REQUIRED — Cloudflare Turnstile SECRET key (spam protection on the forms
+# pipeline). The site verifies Turnstile itself — the portal downstream does no
+# challenge check — so this is the only spam gate.
+# The value below is Cloudflare's public "always passes" TEST secret, which
+# pairs with the test SITE key that src/config.ts falls back to, so the demo
+# form works locally out of the box. Replace both with your real keys before
+# launch (the site key goes in `.env` / the build environment, not here).
+TURNSTILE_SECRET="1x0000000000000000000000000000000AA"
+
+# REQUIRED — the ORGANIZATION's portal API key (`pok_…`), from the portal under
+# Settings → API key.
+#
+# One key per organization. That single key is valid for EVERY form in the org
+# and EVERY website in it — one form or ten, one site or five, it is the same
+# key. That works because the key only AUTHENTICATES; the endpoint key in the
+# submit URL (see the FORMS registry in src/config.ts) is what identifies the
+# form. So adding a form later is a line in that registry and nothing here.
+#
+# The portal is the ONLY durable sink for a lead — it archives the raw
+# submission, stores it, and sends the notification email — so this push is
+# unconditional and hard-failing. Without a valid key every submission fails
+# loudly rather than being silently dropped.
+#
+# The endpoint still accepts a legacy per-form `pfk_…` token in this slot, so
+# older integrations keep working, but it is not the path for a new site: it
+# authenticates one form, while this one value is sent for all of them.
+PORTAL_ORG_KEY=""
+
+# OPTIONAL — Z360 CRM token. Leave it empty to leave the CRM push off; the
+# forms pipeline is complete without it (the lead is already safe in the portal
+# by the time Z360 is called, which is why that push is best-effort).
+#
+# Enabling it is exactly three things and nothing else:
+#   1. set `z360Enabled: true` in SITE (src/config.ts)
+#   2. set `z360InquiriesUrl` to the CRM's inquiries endpoint (src/config.ts)
+#   3. `wrangler secret put Z360_TOKEN` in production (or fill it in below for
+#      local dev)
+# Both switches are required: with either one missing the push is skipped.
+Z360_TOKEN=""
