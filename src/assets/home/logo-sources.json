@@ -1,0 +1,41 @@
+{
+  "sourceSite": "https://peachblossomhealth.com/",
+  "logos": [
+    {
+      "file": "cert-aafp.webp",
+      "name": "American Academy of Family Physicians",
+      "source": "https://peachblossomhealth.com/wp-content/uploads/2026/03/image-158-300x118-1.webp",
+      "usage": "Homepage credentials"
+    },
+    {
+      "file": "cert-abfm.webp",
+      "name": "American Board of Family Medicine",
+      "source": "https://peachblossomhealth.com/wp-content/uploads/2026/03/image-155.webp",
+      "usage": "Homepage credentials"
+    },
+    {
+      "file": "cert-abom.webp",
+      "name": "American Board of Obesity Medicine",
+      "source": "https://peachblossomhealth.com/wp-content/uploads/2026/03/abom-logo-for-nav-for-web.webp",
+      "usage": "Homepage credentials"
+    },
+    {
+      "file": "cert-acls.webp",
+      "name": "Advanced Cardiac Life Support",
+      "source": "https://peachblossomhealth.com/wp-content/uploads/2026/03/image-156-150x150-1.webp",
+      "usage": "Homepage credentials"
+    },
+    {
+      "file": "partner-hardbat-athletics.webp",
+      "name": "Hardbat Athletics",
+      "source": "https://peachblossomhealth.com/wp-content/uploads/2026/03/imgi_22_6718f4ca3f99ab6c6179a45c_Hardbat-Athletics.webp",
+      "sourcePage": "https://peachblossomhealth.com/our-partners/",
+      "usage": "Partner asset; not a medical credential"
+    }
+  ],
+  "notes": [
+    "The homepage carousel repeats four unique logos. Each existing credential asset is byte-identical to its live source.",
+    "The About Us page mentions DPC Alliance, but no matching logo was found on the inspected pages or in public media searches.",
+    "Unused Logoipsum placeholder images in the WordPress media library are excluded."
+  ]
+}
