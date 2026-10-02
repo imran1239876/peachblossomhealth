@@ -876,6 +876,12 @@ a:hover {
 .footer a:hover {
   color: var(--rose-500);
 }
+/* buttons in the footer keep their own text colour (".footer a" outranks
+   ".btn--primary" and turned it dark on rose) */
+.footer .btn--primary,
+.footer .btn--primary:hover {
+  color: #fff;
+}
 .news-form {
   display: grid;
   gap: 10px;
