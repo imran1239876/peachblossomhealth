@@ -2307,83 +2307,11 @@ a:hover {
   padding-block: var(--section);
   background: #fff;
 }
-.cta2-box {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) auto;
-  gap: 40px 64px;
-  align-items: center;
-  padding: clamp(40px, 5.5vw, 80px);
-  border-radius: 40px;
-  background: var(--rose-500);
-  color: rgba(255, 255, 255, 0.88);
-}
-.cta2-bloom {
-  position: absolute;
-  right: -80px;
-  top: -90px;
-  width: 360px;
-  height: 360px;
-  color: #fff;
-  opacity: 0.1;
-  animation: ringSpin 60s linear infinite;
-}
-.cta2-copy {
-  position: relative;
-  display: grid;
-  gap: 18px;
-}
-.cta2-copy h2 {
-  margin: 0;
-  font-size: clamp(2.2rem, 4vw, 3.6rem);
-  line-height: 1.06;
-  color: #fff;
-}
-.cta2-copy h2 span {
-  color: #ffd9d6;
-}
-.cta2-points {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-}
-.cta2-points li {
-  padding: 18px 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.12);
-  font-size: 0.8125rem;
-  line-height: 1.55;
-}
-.cta2-points strong {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 0.9375rem;
-  color: #fff;
-}
-.cta2-actions {
-  position: relative;
-  display: grid;
-  gap: 16px;
-  justify-items: center;
-}
-.cta2-phone {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-}
 
 @media (max-width: 1024px) {
   .em-grid,
   .fq-grid,
-  .ct-card,
-  .cta2-box {
+  .ct-card {
     grid-template-columns: 1fr;
   }
   .pr-grid,
@@ -2417,14 +2345,10 @@ a:hover {
     justify-self: center;
     width: 100%;
   }
-  .cta2-actions {
-    justify-items: start;
-  }
 }
 @media (max-width: 680px) {
   .em-list,
-  .ct-list,
-  .cta2-points {
+  .ct-list {
     grid-template-columns: 1fr;
   }
   .pr-box--family {
