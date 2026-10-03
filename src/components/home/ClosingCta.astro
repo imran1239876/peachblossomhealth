@@ -1,345 +1,182 @@
 ---
 /**
- * Closing banner: the Meet & Greet invitation. Dr. Qureshi's cut-out
- * portrait stands on a soft arch on the right and breaks out above the
- * banner's top edge; a credential tag sits beside her. Decorations are
- * clipped in their own layer so the banner itself can let the photo overflow.
- * On tablet and phone the photo moves below the copy and stays inside.
+ * Closing CTA: a slim band, deliberately not a second hero. By this point the
+ * visitor has read the page, so it is one line of invitation, a small avatar
+ * of Dr. Qureshi for a personal touch, and the two ways to book.
  */
 import { Image } from "astro:assets";
 import Icon from "@/components/Icon.astro";
 import { PRACTICE } from "@/lib/practice";
-import doctor from "@/assets/home/dr-qureshi-cutout.webp";
-
-const steps = [
-  {
-    title: "Choose Your Service",
-    text: "Select from primary care, weight management, or skin treatments for a fully personalized healthcare experience.",
-  },
-  {
-    title: "Flexible Scheduling Options",
-    text: "Pick a convenient time that fits your lifestyle and ensures comprehensive care for every visit.",
-  },
-];
+import avatar from "@/assets/home/dr-qureshi-avatar.webp";
 ---
 
 <section class="cta2" aria-labelledby="cta-title">
   <div class="container">
-    <div class="mg" data-reveal>
-      <div class="mg-bg" aria-hidden="true">
-        <svg class="mg-bloom" viewBox="0 0 100 100"
-          ><use href="#i-blossom-line"></use></svg
-        >
-      </div>
+    <div class="band" data-reveal>
+      <svg class="band-bloom" viewBox="0 0 100 100" aria-hidden="true"
+        ><use href="#i-blossom-line"></use></svg
+      >
 
-      <div class="mg-copy">
-        <span class="mg-eyebrow">Free Meet &amp; Greet</span>
-        <h2 id="cta-title">
-          Schedule Your Free Meet &amp; Greet <span>with Dr. Qureshi</span>
-        </h2>
-        <p class="mg-lead">
-          Schedule a visit with Dr. Rabia Qureshi for personalized,
-          compassionate care tailored to your health needs.
-        </p>
-        <ol class="mg-steps">
-          {
-            steps.map((step, i) => (
-              <li>
-                <span class="mg-n">{String(i + 1).padStart(2, "0")}</span>
-                <strong>{step.title}</strong>
-                <span>{step.text}</span>
-              </li>
-            ))
-          }
-        </ol>
-        <div class="mg-actions">
-          <a
-            class="btn btn--white btn--lg"
-            href={PRACTICE.bookingUrl}
-            target="_blank"
-            rel="noopener"
-            data-cta="book_meet_greet_footer_cta"
-            >Schedule Now <Icon name="arrow" size={18} /></a
-          >
-          <a class="mg-phone" href={PRACTICE.phone.href}>
-            <span class="mg-phone-ic"><Icon name="phone" size={18} /></span>
-            <span><small>Call or text</small>{PRACTICE.phone.display}</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="mg-visual">
-        <span class="mg-arch" aria-hidden="true"></span>
+      <div class="band-intro">
         <Image
-          class="mg-doctor"
-          src={doctor}
-          widths={[480, 960]}
-          sizes="(max-width: 1024px) 340px, 560px"
-          alt="Dr. Qureshi in her white coat"
+          class="band-avatar"
+          src={avatar}
+          alt=""
+          width={72}
+          densities={[1, 1.5]}
         />
-        <div class="mg-tag">
-          <span class="mg-tag-ic"><Icon name="award" size={18} /></span>
-          <span
-            ><strong>Dr. Rabia Qureshi, MD</strong>Double board certified</span
-          >
+        <div>
+          <h2 id="cta-title">
+            Schedule Your Free Meet &amp; Greet <span>with Dr. Qureshi</span>
+          </h2>
+          <p>Personalized, compassionate care tailored to your health needs.</p>
         </div>
+      </div>
+
+      <div class="band-actions">
+        <a
+          class="btn btn--white"
+          href={PRACTICE.bookingUrl}
+          target="_blank"
+          rel="noopener"
+          data-cta="book_meet_greet_footer_cta"
+          >Schedule Now <Icon name="arrow" /></a
+        >
+        <a class="band-phone" href={PRACTICE.phone.href}
+          ><Icon name="phone" size={16} />Call or text {
+            PRACTICE.phone.display
+          }</a
+        >
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .mg {
-    --breakout: clamp(40px, 5vw, 72px);
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    margin-top: var(--breakout);
-    border-radius: 40px;
-    background:
-      radial-gradient(
-        90% 80% at 85% 100%,
-        rgba(255, 255, 255, 0.16),
-        rgba(255, 255, 255, 0) 60%
-      ),
-      linear-gradient(135deg, #bf5d5e 0%, var(--rose-500) 45%, #8f3b3c 100%);
-    color: rgba(255, 255, 255, 0.86);
-    box-shadow: 0 40px 80px -48px rgba(115, 47, 48, 0.7);
+  /* a closing note needs less air than a full section */
+  .cta2 {
+    padding-block: clamp(48px, 6vw, 88px);
   }
 
-  /* decorations live in their own clipped layer */
-  .mg-bg {
-    position: absolute;
-    inset: 0;
+  .band {
+    position: relative;
     overflow: hidden;
-    border-radius: inherit;
-    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px 48px;
+    padding: clamp(28px, 3.5vw, 44px) clamp(28px, 4.5vw, 56px);
+    border-radius: 32px;
+    background: linear-gradient(
+      120deg,
+      #bf5d5e 0%,
+      var(--rose-500) 50%,
+      #8f3b3c 100%
+    );
+    color: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 30px 60px -40px rgba(115, 47, 48, 0.7);
   }
-  .mg-bloom {
+  .band-bloom {
     position: absolute;
-    left: -140px;
-    bottom: -180px;
-    width: 480px;
-    height: 480px;
+    right: 18%;
+    top: 50%;
+    width: 300px;
+    height: 300px;
     color: #fff;
-    opacity: 0.14;
+    opacity: 0.1;
+    translate: 0 -50%;
+    pointer-events: none;
     animation: ringSpin 90s linear infinite;
   }
 
-  /* ---------- copy ---------- */
-  .mg-copy {
+  .band-intro {
     position: relative;
-    display: grid;
-    gap: 18px;
-    align-content: center;
-    padding: clamp(40px, 4.5vw, 64px) clamp(16px, 2vw, 32px)
-      clamp(40px, 4.5vw, 64px) clamp(40px, 5.5vw, 80px);
-  }
-  .mg-eyebrow {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #ffd9d6;
+    gap: 22px;
+    min-width: 0;
   }
-  .mg-eyebrow::before {
-    content: "";
-    width: 28px;
-    height: 1px;
-    background: currentColor;
+  .band-avatar {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85);
   }
-  .mg h2 {
+  .band h2 {
     margin: 0;
     color: #fff;
-    font-size: clamp(2.2rem, 3.4vw, 3.1rem);
-    line-height: 1.06;
+    font-size: clamp(1.6rem, 2.4vw, 2.25rem);
+    line-height: 1.12;
   }
-  .mg h2 span {
-    display: block;
+  .band h2 span {
     color: #ffd9d6;
   }
-  .mg-lead {
-    max-width: 46ch;
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .mg-steps {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    margin: 4px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-  .mg-steps li {
-    display: grid;
-    gap: 4px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.28);
-    font-size: 0.8125rem;
-    line-height: 1.6;
-  }
-  .mg-n {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    line-height: 1;
-    color: #ffd9d6;
-    -webkit-text-stroke: 0.02em currentColor;
-  }
-  .mg-steps strong {
+  .band-intro p {
     margin-top: 6px;
     font-size: 0.9375rem;
-    font-weight: 600;
-    color: #fff;
+    line-height: 1.6;
   }
 
-  .mg-actions {
+  .band-actions {
+    position: relative;
+    flex: none;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 16px 28px;
-    margin-top: 8px;
+    gap: 14px 24px;
   }
-  .mg-actions .btn--white {
+  .band-actions .btn--white {
     color: var(--rose-700);
-    box-shadow: 0 14px 30px -14px rgba(60, 15, 15, 0.6);
+    box-shadow: 0 12px 26px -14px rgba(60, 15, 15, 0.6);
   }
-  .mg-phone {
+  .band-phone {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     color: #fff;
     font-weight: 600;
+    font-size: 0.9375rem;
     text-decoration: none;
+    white-space: nowrap;
   }
-  .mg-phone:hover {
+  .band-phone:hover {
     color: #fff;
-  }
-  .mg-phone-ic {
-    display: grid;
-    place-items: center;
-    width: 46px;
-    height: 46px;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
-  }
-  .mg-phone:hover .mg-phone-ic {
-    background: rgba(255, 255, 255, 0.14);
-  }
-  .mg-phone small {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.75);
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
-  /* ---------- portrait ---------- */
-  .mg-visual {
-    position: relative;
-    min-height: 100%;
-  }
-  .mg-arch {
-    position: absolute;
-    left: 54%;
-    bottom: 0;
-    width: min(72%, 400px);
-    height: 82%;
-    border-radius: 999px 999px 0 0;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.26),
-      rgba(255, 255, 255, 0.06)
-    );
-    translate: -50% 0;
-  }
-  /* anchored right: the photo's own transparent margin keeps the figure
-     inside the banner, and it rises above the top edge by --breakout */
-  .mg-doctor {
-    position: absolute;
-    right: -4%;
-    bottom: 0;
-    width: auto;
-    max-width: none;
-    height: calc(100% + var(--breakout));
-    filter: drop-shadow(0 30px 40px rgba(60, 15, 15, 0.35));
-  }
-  .mg-tag {
-    position: absolute;
-    left: 0;
-    bottom: 7%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px 12px 12px;
-    border-radius: var(--radius-md);
-    background: #fff;
-    box-shadow: var(--shadow-lift);
-    font-size: 0.8125rem;
-    line-height: 1.4;
-    color: var(--text);
-  }
-  .mg-tag strong {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .mg-tag-ic {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--rose-50);
-    color: var(--rose-500);
-  }
-
-  /* ---------- tablet & phone: photo below the copy, kept inside ---------- */
+  /* tablet: stack, actions under the copy */
   @media (max-width: 1024px) {
-    .mg {
-      grid-template-columns: 1fr;
-      margin-top: 0;
+    .band {
+      flex-direction: column;
+      align-items: flex-start;
     }
-    .mg-copy {
-      padding: clamp(32px, 6vw, 56px);
-      padding-bottom: 24px;
-    }
-    .mg-visual {
-      height: clamp(320px, 70vw, 440px);
-    }
-    .mg-doctor {
-      right: auto;
-      left: 50%;
-      height: 100%;
-      translate: -50% 0;
-    }
-    .mg-arch {
-      left: 50%;
-      width: min(70%, 340px);
-    }
-    .mg-tag {
-      left: 16px;
-      bottom: 24px;
+    .band-actions {
+      padding-left: 94px; /* line up with the heading, past the avatar */
     }
   }
+  /* phone: centre everything, full-width button */
   @media (max-width: 680px) {
-    .mg {
-      border-radius: 28px;
+    .band {
+      align-items: stretch;
+      text-align: center;
+      border-radius: 24px;
     }
-    .mg-steps {
-      grid-template-columns: 1fr;
-      gap: 16px;
+    .band-intro {
+      flex-direction: column;
+      gap: 14px;
     }
-    .mg-tag {
-      left: 12px;
-      bottom: 16px;
-      padding: 10px 14px 10px 10px;
-      font-size: 0.75rem;
+    .band-actions {
+      flex-direction: column;
+      padding-left: 0;
+    }
+    .band-actions .btn {
+      width: 100%;
+    }
+    .band-bloom {
+      right: -80px;
     }
   }
 </style>
