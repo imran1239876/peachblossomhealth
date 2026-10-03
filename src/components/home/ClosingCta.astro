@@ -1,36 +1,44 @@
 ---
 /**
- * Closing CTA: a slim band, deliberately not a second hero. By this point the
- * visitor has read the page, so it is one line of invitation, a small avatar
- * of Dr. Qureshi for a personal touch, and the two ways to book.
+ * Closing CTA: a slim band, deliberately not a second hero. Dr. Qureshi's
+ * cut-out portrait is cropped to head and shoulders on the left: she rises a
+ * little above the band on a soft halo and is cut off at the band's bottom
+ * edge. Beside her, one line of invitation and the two ways to book.
+ *
+ * The decorations sit in their own clipped layer so the band itself can let
+ * the portrait out of the top; the portrait's own wrapper clips the bottom.
  */
 import { Image } from "astro:assets";
 import Icon from "@/components/Icon.astro";
 import { PRACTICE } from "@/lib/practice";
-import avatar from "@/assets/home/dr-qureshi-avatar.webp";
+import doctor from "@/assets/home/dr-qureshi-cutout.webp";
 ---
 
 <section class="cta2" aria-labelledby="cta-title">
   <div class="container">
     <div class="band" data-reveal>
-      <svg class="band-bloom" viewBox="0 0 100 100" aria-hidden="true"
-        ><use href="#i-blossom-line"></use></svg
-      >
+      <div class="band-bg" aria-hidden="true">
+        <svg class="band-bloom" viewBox="0 0 100 100"
+          ><use href="#i-blossom-line"></use></svg
+        >
+      </div>
 
-      <div class="band-intro">
+      <div class="band-photo">
+        <span class="band-halo" aria-hidden="true"></span>
         <Image
-          class="band-avatar"
-          src={avatar}
-          alt=""
-          width={72}
-          densities={[1, 1.5]}
+          class="band-doctor"
+          src={doctor}
+          widths={[360, 720]}
+          sizes="360px"
+          alt="Dr. Qureshi in her white coat"
         />
-        <div>
-          <h2 id="cta-title">
-            Schedule Your Free Meet &amp; Greet <span>with Dr. Qureshi</span>
-          </h2>
-          <p>Personalized, compassionate care tailored to your health needs.</p>
-        </div>
+      </div>
+
+      <div class="band-copy">
+        <h2 id="cta-title">
+          Schedule Your Free Meet &amp; Greet <span>with Dr. Qureshi</span>
+        </h2>
+        <p>Personalized, compassionate care tailored to your health needs.</p>
       </div>
 
       <div class="band-actions">
@@ -59,14 +67,17 @@ import avatar from "@/assets/home/dr-qureshi-avatar.webp";
   }
 
   .band {
+    --rise: 64px; /* how far the portrait rises above the band */
+    --band-radius: 32px;
     position: relative;
-    overflow: hidden;
-    display: flex;
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px 48px;
-    padding: clamp(28px, 3.5vw, 44px) clamp(28px, 4.5vw, 56px);
-    border-radius: 32px;
+    gap: 0 40px;
+    min-height: 210px;
+    margin-top: var(--rise);
+    padding-right: clamp(28px, 4.5vw, 56px);
+    border-radius: var(--band-radius);
     background: linear-gradient(
       120deg,
       #bf5d5e 0%,
@@ -76,56 +87,87 @@ import avatar from "@/assets/home/dr-qureshi-avatar.webp";
     color: rgba(255, 255, 255, 0.86);
     box-shadow: 0 30px 60px -40px rgba(115, 47, 48, 0.7);
   }
+  .band-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
   .band-bloom {
     position: absolute;
-    right: 18%;
+    right: 22%;
     top: 50%;
     width: 300px;
     height: 300px;
     color: #fff;
     opacity: 0.1;
     translate: 0 -50%;
-    pointer-events: none;
     animation: ringSpin 90s linear infinite;
   }
 
-  .band-intro {
+  /* ---------- portrait ---------- */
+  .band-photo {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    min-width: 0;
+    align-self: stretch;
+    /* open at the top (the portrait rises out), cut at the band's bottom
+       edge, rounded to match the band's bottom-left corner */
+    clip-path: inset(
+      calc(-1 * var(--rise) - 24px) -40px 0 0 round 0 0 0 var(--band-radius)
+    );
   }
-  .band-avatar {
-    flex: none;
-    width: 72px;
-    height: 72px;
+  .band-halo {
+    position: absolute;
+    left: 50%;
+    bottom: -56px;
+    width: 236px;
+    height: 236px;
     border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.24),
+      rgba(255, 255, 255, 0.08) 70%
+    );
+    translate: -50% 0;
+  }
+  .band-doctor {
+    position: absolute;
+    left: 50%;
+    bottom: -72px;
+    width: auto;
+    max-width: none;
+    height: calc(100% + var(--rise) + 72px);
+    translate: -50% 0;
+    filter: drop-shadow(0 18px 28px rgba(60, 15, 15, 0.35));
+  }
+
+  /* ---------- copy & actions ---------- */
+  .band-copy {
+    position: relative;
+    padding-block: 36px;
   }
   .band h2 {
     margin: 0;
     color: #fff;
-    font-size: clamp(1.6rem, 2.4vw, 2.25rem);
+    font-size: clamp(1.6rem, 2.3vw, 2.1rem);
     line-height: 1.12;
   }
   .band h2 span {
     color: #ffd9d6;
   }
-  .band-intro p {
-    margin-top: 6px;
+  .band-copy p {
+    margin-top: 8px;
     font-size: 0.9375rem;
     line-height: 1.6;
   }
 
   .band-actions {
     position: relative;
-    flex: none;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    gap: 14px 24px;
+    gap: 14px;
+    padding-block: 36px;
   }
   .band-actions .btn--white {
     color: var(--rose-700);
@@ -147,36 +189,65 @@ import avatar from "@/assets/home/dr-qureshi-avatar.webp";
     text-underline-offset: 4px;
   }
 
-  /* tablet: stack, actions under the copy */
-  @media (max-width: 1024px) {
+  /* ---------- tablet: actions drop under the copy ---------- */
+  @media (max-width: 1100px) {
     .band {
-      flex-direction: column;
-      align-items: flex-start;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 0 32px;
+    }
+    .band-photo {
+      grid-row: span 2;
+    }
+    .band-copy {
+      align-self: end;
+      padding-block: 36px 0;
     }
     .band-actions {
-      padding-left: 94px; /* line up with the heading, past the avatar */
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-self: start;
+      gap: 14px 24px;
+      padding-block: 20px 36px;
     }
   }
-  /* phone: centre everything, full-width button */
+
+  /* ---------- phone: portrait on top, everything centred ---------- */
   @media (max-width: 680px) {
     .band {
-      align-items: stretch;
+      --rise: 48px;
+      --band-radius: 24px;
+      grid-template-columns: minmax(0, 1fr);
+      padding-right: 0;
       text-align: center;
-      border-radius: 24px;
     }
-    .band-intro {
-      flex-direction: column;
-      gap: 14px;
+    .band-photo {
+      grid-row: auto;
+      height: 190px;
+      clip-path: inset(calc(-1 * var(--rise) - 24px) 0 0 0);
+    }
+    /* fade the portrait out where the copy begins */
+    .band-doctor {
+      bottom: -40px;
+      height: calc(100% + var(--rise) + 40px);
+      mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+    }
+    .band-halo {
+      width: 200px;
+      height: 200px;
+      bottom: -40px;
+    }
+    .band-copy {
+      padding: 18px 24px 0;
     }
     .band-actions {
       flex-direction: column;
-      padding-left: 0;
+      padding: 20px 24px 28px;
     }
     .band-actions .btn {
       width: 100%;
     }
     .band-bloom {
-      right: -80px;
+      right: -90px;
     }
   }
 </style>
